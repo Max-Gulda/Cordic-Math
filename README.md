@@ -21,7 +21,7 @@ The cordic algorithm is a simple and efficient algorithm to calculate trigonomet
 
 Cordic uses simple simple bit-shift operations for several computing tasks. In the library I included other mathimatical functions aswell that might be useful for future users.
 
-
+**All the inputs and outputs are in degrees!**
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
