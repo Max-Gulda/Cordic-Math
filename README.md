@@ -22,6 +22,8 @@
 
 COordinate Rotation DIgital Computer
 
+The cordic algorithm is used for calculating various functions such as trigonometric. This implementation in C is for calculating some of these with fixed point arithmetics.
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
