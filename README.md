@@ -20,9 +20,11 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-COordinate Rotation DIgital Computer
+The cordic algorithm is a simple and efficient algorithm to calculate trigonometric functions, hyperbolic functions, square roots, multiplications, divisions, exponentials, logarithms and more. The cordic algorithm dates back to 1956 but still work great for microcontrollers.
 
-The cordic algorithm is used for calculating various functions such as trigonometric. This implementation in C is for calculating some of these with fixed point arithmetics.
+Cordic uses simple simple bit-shift operations for several computing tasks. 
+
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
