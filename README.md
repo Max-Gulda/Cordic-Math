@@ -32,6 +32,11 @@ The code is built around the defined variable CORDIC_MATH_FRACTION_BITS as defau
 
 ![This is an image](https://raw.githubusercontent.com/Flaxyson/Cordic-Math/main/pictures/Screenshot%201.png?token=GHSAT0AAAAAABWJ36NW5R6YSJAGUJA4CROWYWF7HUA)
 
+##
+
+![This is an image](https://raw.githubusercontent.com/Flaxyson/Cordic-Math/main/pictures/Screenshot%202.png?token=GHSAT0AAAAAABWJ36NXXQKNTNJ5QAETLD3CYWF7KCA)
+
+
 ## Functions
 
 - [x] Arctan
