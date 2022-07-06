@@ -2,6 +2,7 @@
 
   <p align="center">
     Project Decription
+  ![This is an image]([https://raw.githubusercontent.com/Flaxyson/Cordic-Math/main/pictures/Screenshot%201.png?token=GHSAT0AAAAAABWJ36NW2W4SHXRJL3FVOFO4YWF6Y2Q](https://en.wikipedia.org/wiki/CORDIC#/media/File:Sinus_und_Kosinus_am_Einheitskreis_1.svg))
     <br />
     <a href="https://github.com/Flaxyson/Cordic-Math"><strong>Explore the docs »</strong></a>
     <br />
