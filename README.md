@@ -13,6 +13,7 @@
   </p>
 </div>
 
+<br />
 
 ## About The CORDIC Algorithm
 
