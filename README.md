@@ -15,8 +15,7 @@
 </div>
 
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+## About The CORDIC Algorithm
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
