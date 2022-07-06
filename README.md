@@ -54,8 +54,8 @@ The following image shows the precision of the Cordic algorithm. The left column
 - [x] Tan Hyperbolic
 - [x] Cos Hyperbolic
 - [x] Sin Hyperbolic
-- [x] e To The Power
-- [x] x To The Power
+- [x] e to the Power
+- [x] x to the Power
 - [x] Natural logratihm
 - [x] Conversion From Radians to Degrees
 - [x] Conversion From Degrees to Radians
