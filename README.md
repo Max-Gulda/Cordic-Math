@@ -32,13 +32,14 @@ The code is built around the defined variable CORDIC_MATH_FRACTION_BITS in cordi
 
 ![my image](pictures/Screenshoot-1.png) 
 
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Accuracy
 The following image shows the precision of the Cordic algorithm. The left column is math.h and the right column is the Cordic algorithm. The input was randomly picked and the result was the following:
 
 ![my image](pictures/Screenshoot-2.png)
 
-
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Functions
 
