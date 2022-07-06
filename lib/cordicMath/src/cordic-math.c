@@ -65,12 +65,12 @@ static const uint32_t LUT_CORDIC_ATANH[14] = {FLOAT_TO_INT(31.4729 * (1 << CORDI
 /*****************************************VECTORING MODE***********************************************/
 
 /**
- * @brief Fast fixedpoint [24|8] calculation of arcustangens using the cordic algorithm
+ * @brief Fast fixedpoint calculation of arcustangens using the cordic algorithm
  * 
- * @param y fixedpoint [24|8], numerator, arctan(y/x)
- * @param x fixedpoint [24|8], denominator, arctan(y/x)
+ * @param y fixedpoint, numerator, arctan(y/x)
+ * @param x fixedpoint, denominator, arctan(y/x)
  * 
- * @return 32 bit int fixedpoint [24|8], arctan(y/x)
+ * @return 32 bit int fixedpoint, arctan(y/x)
  */
 int32_t cordic_atan(int32_t y, int32_t x) {
     int sumAngle = 0, tempX;
@@ -96,13 +96,13 @@ int32_t cordic_atan(int32_t y, int32_t x) {
 }
 
 /**
- * @brief fast fixedpoints [24|8] calculation of hypotenuse using the cordic
+ * @brief fast fixedpoints calculation of hypotenuse using the cordic
  * algorithm
  *
- * @param y fixedpoint [24|8]
- * @param x fixedpoint [24|8]
+ * @param y fixedpoint
+ * @param x fixedpoint
  *
- * @return 32 bit int fixedpoint [24|8], sqrt( x*x + y*y )
+ * @return 32 bit int fixedpoint, sqrt( x*x + y*y )
  */
 int32_t cordic_hypotenuse(int32_t y, int32_t x) {
     int tempX;
@@ -126,11 +126,11 @@ int32_t cordic_hypotenuse(int32_t y, int32_t x) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] cossinus using the cordic algorithm
+ * @brief Fast fixedpoint cossinus using the cordic algorithm
  *
- * @param theta, cos(theta), theta = fixedpoint [24|8] in degrees
+ * @param theta, cos(theta), theta = fixedpoint in degrees
  *
- * @return 32 bit int, cos of theta, fixedpoint [24|8]
+ * @return 32 bit int, cos of theta, fixedpoint
  */
 int32_t cordic_cos(int32_t theta) {
     int x = CORDIC_GAIN, y = 0, sumAngle = 0, tempX;
@@ -166,11 +166,11 @@ int32_t cordic_cos(int32_t theta) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] sinus using the cordic algorithm
+ * @brief Fast fixedpoint sinus using the cordic algorithm
  *
- * @param theta, sin(theta), theta = fixedpoint [24|8] in degrees
+ * @param theta, sin(theta), theta = fixedpoint in degrees
  *
- * @return 32 bit int, sin of theta, fixedpoint [24|8]
+ * @return 32 bit int, sin of theta, fixedpoint
  */
 int32_t cordic_sin(int32_t theta) {
     int x = CORDIC_GAIN, y = 0, sumAngle = 0, tempX;
@@ -208,11 +208,11 @@ int32_t cordic_sin(int32_t theta) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] arccosinus using the cordic algorithm
+ * @brief Fast fixedpoint arccosinus using the cordic algorithm
  *
- * @param yInput, arcsin(xInput), xInput = fixedpoint [24|8]
+ * @param yInput, arcsin(xInput), xInput = fixedpoint
  *
- * @return 32 bit int, arcsin of yInput, fixedpoint [24|8]
+ * @return 32 bit int, arcsin of yInput, fixedpoint
  */
 int32_t cordic_asin(int32_t input) {
     int x = CORDIC_GAIN, y = 0, sumAngle = 0, tempX,
@@ -241,11 +241,11 @@ int32_t cordic_asin(int32_t input) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] arccosinus using the cordic algorithm
+ * @brief Fast fixedpoint arccosinus using the cordic algorithm
  *
- * @param xInput, arccos(xInput), xInput = fixedpoint [24|8]
+ * @param xInput, arccos(xInput), xInput = fixedpoint
  *
- * @return 32 bit int, arccos of xInput, fixedpoint [24|8]
+ * @return 32 bit int, arccos of xInput, fixedpoint
  */
 int32_t cordic_acos(int32_t xInput) {
     int x = 0, y = CORDIC_GAIN, sumAngle = 90 << CORDIC_MATH_FRACTION_BITS,
@@ -274,11 +274,11 @@ int32_t cordic_acos(int32_t xInput) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] tan using the cordic algorithm
+ * @brief Fast fixedpoint tan using the cordic algorithm
  *
- * @param degree, tan(degree), degree = fixedpoint [24|8] in degrees.
+ * @param degree, tan(degree), degree = fixedpoint in degrees.
  *
- * @return 32 bit int, tan of degree, fixedpoint [24|8]
+ * @return 32 bit int, tan of degree, fixedpoint
  */
 int32_t cordic_tan(int32_t degree) {
     return ((cordic_sin(degree) << CORDIC_MATH_FRACTION_BITS) /
@@ -289,12 +289,12 @@ int32_t cordic_tan(int32_t degree) {
  * MODE***********************************************/
 
 /**
- * @brief Fast fixedpoint [24|8] calculation of squareroot using the cordic
+ * @brief Fast fixedpoint calculation of squareroot using the cordic
  * algorithm
  *
- * @param x, sqrt(x), x = fixedpoint [24|8]
+ * @param x, sqrt(x), x = fixedpoint
  *
- * @return 32 bit int, squareroot of x, fixedpoint [24|8]
+ * @return 32 bit int, squareroot of x, fixedpoint
  */
 int32_t cordic_sqrt(int32_t x) {
     int poweroftwo;
@@ -332,13 +332,13 @@ int32_t cordic_sqrt(int32_t x) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] calculation of arcustangens hyperbolic using
+ * @brief Fast fixedpoint calculation of arcustangens hyperbolic using
  * the cordic algorithm
  *
- * @param y fixedpoint [24|8], numerator, arctanh(y/x)
- * @param x fixedpoint [24|8], denominator, arctanh(y/x)
+ * @param y fixedpoint, numerator, arctanh(y/x)
+ * @param x fixedpoint, denominator, arctanh(y/x)
  * 
- * @return 32 bit int fixedpoint [24|8], arctanh(y/x)
+ * @return 32 bit int fixedpoint, arctanh(y/x)
  */
 int32_t cordic_arctanh(int32_t y, int32_t x) {
     int tempX, k = 4, sumAngle = 0;
@@ -376,12 +376,12 @@ int32_t cordic_arctanh(int32_t y, int32_t x) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] calculation of natural logarithm using the
+ * @brief Fast fixedpoint calculation of natural logarithm using the
  * cordic algorithm
  *
- * @param input fixedpoint [24|8], ln(input)
+ * @param input fixedpoint, ln(input)
  *
- * @return 32 bit int fixedpoint [24|8], ln(input)
+ * @return 32 bit int fixedpoint, ln(input)
  */
 int32_t cordic_ln(int32_t input) {
     int k = 0;
@@ -401,12 +401,12 @@ int32_t cordic_ln(int32_t input) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] calculation of arccosinus hyperbollic using the
+ * @brief Fast fixedpoint calculation of arccosinus hyperbollic using the
  * cordic algorithm
  *
- * @param x fixedpoint [24|8], arccosh(x)
+ * @param x fixedpoint, arccosh(x)
  *
- * @return 32 bit int fixedpoint [24|8], arccosinus-hyperbollic(x)
+ * @return 32 bit int fixedpoint, arccosinus-hyperbollic(x)
  */
 int32_t cordic_arccosh(int32_t x) {
     int tempX, k = 4, sumAngle = 0, y = DECIMAL_TO_FP, xt = x;
@@ -447,12 +447,12 @@ int32_t cordic_arccosh(int32_t x) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] calculation of arcsinus hyperbollic using the
+ * @brief Fast fixedpoint calculation of arcsinus hyperbollic using the
  * cordic algorithm
  *
- * @param y fixedpoint [24|8], arcsinh(y)
+ * @param y fixedpoint, arcsinh(y)
  *
- * @return 32 bit int fixedpoint [24|8], arcsinus-hyperbollic(y)
+ * @return 32 bit int fixedpoint, arcsinus-hyperbollic(y)
  */
 int32_t cordic_arcsinh(int32_t y) {
     int tempX, k = 4, sumAngle = 0, x = DECIMAL_TO_FP, yt = y;
@@ -478,12 +478,12 @@ int32_t cordic_arcsinh(int32_t y) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] calculation of sinus hyperbollic using the
+ * @brief Fast fixedpoint calculation of sinus hyperbollic using the
  * cordic algorithm
  *
- * @param theta Fixedpoint [24|8] in degrees, arcsinh(theta)
+ * @param theta Fixedpoint in degrees, arcsinh(theta)
  *
- * @return 32 bit int fixedpoint [24|8], sinus-hyperbollic(theta)
+ * @return 32 bit int fixedpoint, sinus-hyperbollic(theta)
  */
 int32_t cordic_sinh(int32_t theta) {
     int tempX, k = 4, sumAngle = theta, y = 0,
@@ -521,12 +521,12 @@ int32_t cordic_sinh(int32_t theta) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] calculation of cossinus hyperbollic using the
+ * @brief Fast fixedpoint calculation of cossinus hyperbollic using the
  * cordic algorithm
  *
- * @param theta Fixedpoint [24|8] in degrees, arccosh(theta)
+ * @param theta Fixedpoint in degrees, arccosh(theta)
  *
- * @return 32 bit int fixedpoint [24|8], cossinus-hyperbollic(theta)
+ * @return 32 bit int fixedpoint, cossinus-hyperbollic(theta)
  */
 int32_t cordic_cosh(int32_t theta) {
     int tempX, k = 4, sumAngle = theta, y = 0,
@@ -564,12 +564,12 @@ int32_t cordic_cosh(int32_t theta) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] calculation of tangens hyperbollic using the
+ * @brief Fast fixedpoint calculation of tangens hyperbollic using the
  * cordic algorithm
  *
- * @param theta Fixedpoint [24|8] in degrees, tanh(theta)
+ * @param theta Fixedpoint in degrees, tanh(theta)
  *
- * @return 32 bit int fixedpoint [24|8], tangens-hyperbollic(theta)
+ * @return 32 bit int fixedpoint, tangens-hyperbollic(theta)
  */
 int32_t cordic_tanh(int32_t theta) {
     return (((long)cordic_sinh(theta) << CORDIC_MATH_FRACTION_BITS) /
@@ -577,11 +577,11 @@ int32_t cordic_tanh(int32_t theta) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] calculation of e^x using the cordic algorithm
+ * @brief Fast fixedpoint calculation of e^x using the cordic algorithm
  *
- * @param exponent fixedpoint [24|8] exponent, e^exponent
+ * @param exponent fixedpoint exponent, e^exponent
  *
- * @return 32 bit int fixedpoint [24|8], e^exponent
+ * @return 32 bit int fixedpoint, e^exponent
  */
 int32_t cordic_exp(int32_t exponent) {
     int tempX, k = 4, sumAngle = to_degree(exponent),
@@ -631,12 +631,12 @@ int32_t cordic_exp(int32_t exponent) {
 }
 
 /**
- * @brief Fast fixedpoint [24|8] calculation of a^x using the cordic algorithm
+ * @brief Fast fixedpoint calculation of a^x using the cordic algorithm
  *
- * @param base fixedpoint [24|8] base, base^exponent
- * @param exponent fixedpoint [24|8] base, base^exponent
+ * @param base fixedpoint base, base^exponent
+ * @param exponent fixedpoint base, base^exponent
  *
- * @return 32 bit int fixedpoint [24|8], base^exponent
+ * @return 32 bit int fixedpoint, base^exponent
  */
 int32_t cordic_pow(int32_t base, int32_t exponent) {
     return cordic_exp(exponent * cordic_ln(base) >> CORDIC_MATH_FRACTION_BITS);
@@ -684,9 +684,9 @@ int32_t isOdd(int32_t input) {
 /**
  * @brief Converts radians to degrees
  *
- * @param input fixedpoint [24|8] in radians
+ * @param input fixedpoint in radians
  *
- * @return 32 bit int fixedpoint [24|8] in degrees
+ * @return 32 bit int fixedpoint in degrees
  */
 int32_t to_degree(int32_t input) {
     return ((long)input * ONE_EIGHTY_DIV_PI >> CORDIC_MATH_FRACTION_BITS);
@@ -695,9 +695,9 @@ int32_t to_degree(int32_t input) {
 /**
  * @brief Converts degrees to radians
  *
- * @param input fixedpoint [24|8] in degrees
+ * @param input fixedpoint in degrees
  *
- * @return 32 bit int fixedpoint [24|8] in degrees
+ * @return 32 bit int fixedpoint in degrees
  */
 int32_t to_radians(int32_t input) {
     return (((long)input << CORDIC_MATH_FRACTION_BITS) / ONE_EIGHTY_DIV_PI);
