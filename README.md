@@ -17,8 +17,6 @@
 
 ## About The CORDIC Algorithm
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
 The cordic algorithm is a simple and efficient algorithm to calculate trigonometric functions, hyperbolic functions, square roots, multiplications, divisions, exponentials, logarithms and more. The cordic algorithm dates back to 1956 but still work great for microcontrollers.
 
 Cordic uses simple simple bit-shift operations for several computing tasks. 
@@ -27,11 +25,10 @@ Cordic uses simple simple bit-shift operations for several computing tasks.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-<!-- GETTING STARTED -->
-## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+## Modifying The Code
+
+The code is built around the defined variable CORDIC_MATH_FRACTION_BITS as default this is set to 16, which means the calculations is made in 16 bit fixed point arithmetic. This variable can easily be changed by future users to change the fixedpoint.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
