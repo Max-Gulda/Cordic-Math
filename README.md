@@ -30,9 +30,7 @@ Cordic uses simple simple bit-shift operations for several computing tasks. In t
 
 The code is built around the defined variable CORDIC_MATH_FRACTION_BITS. As default this is set to 16, which means the calculations is made in 16 bit fixed point arithmetic. This variable can easily be changed by future users to change the fixedpoint.
 
-<p align="center">
-  <img src="https://github.com/Flaxyson/Cordic-Math/pictures/Screenshot 1.png" />
-</p>
+![my image](pictures/Screenshoot-1.png) 
 
 
 ## Accuracy
