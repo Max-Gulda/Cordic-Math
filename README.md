@@ -3,7 +3,7 @@
   <p align="center">
     project_description
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/Flaxyson/Cordic-Math"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     ·
