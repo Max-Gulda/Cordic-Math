@@ -35,7 +35,7 @@ The code is built around the defined variable CORDIC_MATH_FRACTION_BITS. As defa
 ##
 The following image shows the precision of the Cordic algorithm. The left column is math.h and the right column is the Cordic algorithm.
 
-![This is an image](https://raw.githubusercontent.com/Flaxyson/Cordic-Math/main/pictures/Screenshot%202.png?token=GHSAT0AAAAAABWJ36NXXQKNTNJ5QAETLD3CYWF7KCA)
+![This is an image](https://raw.githubusercontent.com/Flaxyson/Cordic-Math/main/pictures/Screenshot%202.png?token=GHSAT0AAAAAABWJ36NW6BIBGRDXMJNKHL34YWF7QIA)
 
 
 ## Functions
