@@ -1,3 +1,5 @@
+#pragma once
+
 #include "stdint.h"
 
 #define CORDIC_MATH_FRACTION_BITS 16
