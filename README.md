@@ -1,7 +1,6 @@
 <h1 align="center">Cordic math</h3>
 
   <p align="center">
-    project_description
     <br />
     <a href="https://github.com/Flaxyson/Cordic-Math"><strong>Explore the docs »</strong></a>
     <br />
