@@ -2,7 +2,7 @@
 
   <p align="center">
     Project Decription
-  ![This is an image]([https://raw.githubusercontent.com/Flaxyson/Cordic-Math/main/pictures/Screenshot%201.png?token=GHSAT0AAAAAABWJ36NW2W4SHXRJL3FVOFO4YWF6Y2Q](https://en.wikipedia.org/wiki/CORDIC#/media/File:Sinus_und_Kosinus_am_Einheitskreis_1.svg))
+  
     <br />
     <a href="https://github.com/Flaxyson/Cordic-Math"><strong>Explore the docs »</strong></a>
     <br />
@@ -33,10 +33,32 @@ The code is built around the defined variable CORDIC_MATH_FRACTION_BITS as defau
 
 ![This is an image](https://raw.githubusercontent.com/Flaxyson/Cordic-Math/main/pictures/Screenshot%201.png?token=GHSAT0AAAAAABWJ36NW2W4SHXRJL3FVOFO4YWF6Y2Q)
 
-<!-- USAGE EXAMPLES -->
-## Usage
+## Functions
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+- [x] Arctan
+- [x] Arcsin
+- [x] Arccos
+- [x] Tan
+- [x] Cos
+- [x] Sin
+- [x] Squareroot
+- [x] Calculation of Hypotenuse
+- [x] Arctan Hyperbolic
+- [x] Arcsin Hyperbolic
+- [x] Arccos Hyperbolic
+- [x] Tan Hyperbolic
+- [x] Cos Hyperbolic
+- [x] Sin Hyperbolic
+- [x] e To The Power
+- [x] x To The Power
+- [x] Natural logratihm
+- [x] Conversion From Radians to Degrees
+- [x] Conversion From Degrees to Radians
+- [x] Absolute
+- [x] Is Odd
+- [x] Is Even
+- [ ] Rectangular to Polar Conversion
+- [ ] Polar to Rectangular Conversion
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
