@@ -1,6 +1,7 @@
 #pragma once
 
 #include "stdint.h"
+
 /**
  * @brief CORDIC_MATH_FRACTION_BITS is the number of bits represented by the decimals.
  * This variable can be changed but the recomended value is inbetween 8 and 22.
@@ -13,7 +14,6 @@ typedef struct {
 	int y;
 	int theta;
     int r;
-
 } Coordinates;
 
 int32_t cordic_atan(int32_t y, int32_t x);
@@ -22,7 +22,7 @@ int32_t cordic_cos(int32_t theta);
 int32_t cordic_sin(int32_t theta);
 int32_t cordic_asin(int32_t yInput);
 int32_t cordic_acos(int32_t xInput);
-int32_t cordic_tan(int32_t degree);
+int32_t cordic_tan(int32_t theta);
 int32_t cordic_sqrt(int32_t x);
 int32_t abs(int32_t input);
 int32_t isEven(int32_t input);

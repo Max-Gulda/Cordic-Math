@@ -277,13 +277,45 @@ int32_t cordic_acos(int32_t xInput) {
 /**
  * @brief Fast fixedpoint tan using the cordic algorithm
  *
- * @param degree, tan(degree), degree = fixedpoint according to CORDIC_MATH_FRACTION_BITS in degrees.
+ * @param theta, tan(degree), degree = fixedpoint according to CORDIC_MATH_FRACTION_BITS in degrees.
  *
  * @return 32 bit int, tan of degree, fixedpoint according to CORDIC_MATH_FRACTION_BITS
  */
-int32_t cordic_tan(int32_t degree) {
-    return ((cordic_sin(degree) << CORDIC_MATH_FRACTION_BITS) /
-            cordic_cos(degree));
+int32_t cordic_tan(int32_t theta) {
+        int x = CORDIC_GAIN, y = 0, sumAngle = 0, tempX;
+
+    theta %= (360 << CORDIC_MATH_FRACTION_BITS);
+
+    if (theta > (90 << CORDIC_MATH_FRACTION_BITS)) {
+        sumAngle = 180 << CORDIC_MATH_FRACTION_BITS;
+    }
+    if (theta > (270 << CORDIC_MATH_FRACTION_BITS)) {
+        sumAngle = 360 << CORDIC_MATH_FRACTION_BITS;
+    }
+
+    for (int i = 0; i < 15; i++) {
+        tempX = x;
+        if (theta > sumAngle) {
+            /* Rotate counter clockwise */
+            x -= (y >> i);
+            y += (tempX >> i);
+            sumAngle += LUT_CORDIC_ATAN[i];
+        } else {
+            /* Rotate clockwise */
+            x += (y >> i);
+            y -= (tempX >> i);
+            sumAngle -= LUT_CORDIC_ATAN[i];
+        }
+
+    }
+
+    if (theta > (90 << CORDIC_MATH_FRACTION_BITS) &&
+        theta < (270 << CORDIC_MATH_FRACTION_BITS)) {
+        x = -x;    
+        y = -y;
+    }
+
+    return (y << CORDIC_MATH_FRACTION_BITS) / x;
 }
 
 /**
