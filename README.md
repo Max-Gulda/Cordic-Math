@@ -23,6 +23,12 @@ Cordic uses simple simple bit-shift operations for several computing tasks. In t
 
 ***All the inputs and outputs are in degrees!***
 
+Polar to rectangular conversion takes a pointer to a struct. The struct is defined in the cordic-math.h file. 
+- Rectangular to polar form takes the input on the x & y variable, and the result is given in the r & theta variable.
+- Polar to rectangular form takes the input on the theta & r variable, and the result is given in the x & y variable.
+
+![My image](img/Screenshot-3.png)
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -30,14 +36,14 @@ Cordic uses simple simple bit-shift operations for several computing tasks. In t
 
 The code is built around the defined variable CORDIC_MATH_FRACTION_BITS in cordic-math.h file. As default this is set to 16, which means the calculations is made in 16 bit fixed point arithmetic. This variable can easily be changed by future users to change the fixedpoint to suite their needs.
 
-![My image](img/Screenshoot-1.png)
+![My image](img/Screenshot-1.png)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Accuracy
 The following image shows the precision of the Cordic algorithm. The left column is math.h and the right column is the Cordic algorithm. The input was randomly picked and the result was the following:
 
-![My image](img/Screenshoot-2.png)
+![My image](img/Screenshot-2.png)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
