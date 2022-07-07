@@ -4,6 +4,14 @@
 
 #define CORDIC_MATH_FRACTION_BITS 16
 
+typedef struct {
+	int x;
+	int y;
+	int theta;
+    int r;
+
+} Coordinates;
+
 int32_t cordic_atan(int32_t y, int32_t x);
 int32_t cordic_hypotenuse(int32_t y, int32_t x);
 int32_t cordic_cos(int32_t theta);
@@ -26,3 +34,5 @@ int32_t cordic_cosh(int32_t theta);
 int32_t cordic_tanh(int32_t theta);
 int32_t cordic_exp(int32_t exponent);
 int32_t cordic_pow(int32_t base, int32_t exponent);
+int32_t cordic_polar_rectangular(Coordinates *input);
+int32_t cordic_rectangular_polar(Coordinates *input);

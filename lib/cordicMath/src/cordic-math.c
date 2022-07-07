@@ -17,6 +17,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
+
 #include "cordic-math.h"
 
 
@@ -285,8 +286,81 @@ int32_t cordic_tan(int32_t degree) {
             cordic_cos(degree));
 }
 
-/*****************************************HYPERBOLIC
- * MODE***********************************************/
+/**
+ * @brief Fast fixedpoint rectangular to polar conversion using the cordic algorithm
+ * 
+ * @param input, Coordinate struct pointer, x and y = fixedpoint coordinates according to CORDIC_MATH_FRACTION_BITS
+ * 
+ * @return 0, but struct r and theta will be the coordinates in polar form
+ */
+int32_t cordic_rectangular_polar(Coordinates *input) {
+    int tempX, sumAngle = 0, x = input->x, y = input->y;
+    if (x < 0 && y >= 0) {
+        sumAngle = 90 * (1 << CORDIC_MATH_FRACTION_BITS);
+        x = abs(x);
+    } else if (x < 0 && y < 0) {
+        sumAngle = 180 * (1 << CORDIC_MATH_FRACTION_BITS);
+        x = abs(x);
+        y = abs(y);
+    }
+
+    for (int i = 0; i < 15; i++) {
+        tempX = x;
+        if (y > 0) {
+            /* Rotate clockwise */
+            x += (y >> i);
+            y -= (tempX >> i);
+            sumAngle += LUT_CORDIC_ATAN[i];
+        } else {
+            /* Rotate counterclockwise */
+            x -= (y >> i);
+            y += (tempX >> i);
+            sumAngle -= LUT_CORDIC_ATAN[i];
+        }
+    }
+    input->theta = sumAngle;
+    input->r = ((long)x * CORDIC_GAIN) >> CORDIC_MATH_FRACTION_BITS;
+    return 0;
+}
+
+/**
+ * @brief Fast fixedpoint polar to rectangular conversion using the cordic algorithm
+ * 
+ * @param input, Coordinate struct pointer, r and theta = fixedpoint coordinates according to CORDIC_MATH_FRACTION_BITS
+ *  
+ * @return 0, but struct x and y will be the coordinates in rectangular form
+ */
+int32_t cordic_polar_rectangular(Coordinates *input) {
+    int tempX, sumAngle = 0, x = CORDIC_GAIN, y = 0;
+
+    input->theta %= (360 << CORDIC_MATH_FRACTION_BITS);
+
+    if (input->theta > (90 * (1 << CORDIC_MATH_FRACTION_BITS)) &&
+        input->theta < (270 * (1 << CORDIC_MATH_FRACTION_BITS))) {
+
+        sumAngle = 180 * (1 << CORDIC_MATH_FRACTION_BITS);
+        x = -x;
+    }
+    for (int i = 0; i < 15; i++) {
+        tempX = x;
+        if (input->theta > sumAngle) {
+            /* Rotate counter clockwise */
+            x -= (y >> i);
+            y += (tempX >> i);
+            sumAngle += LUT_CORDIC_ATAN[i];
+        } else {
+            /* Rotate clockwise */
+            x += (y >> i);
+            y -= (tempX >> i);
+            sumAngle -= LUT_CORDIC_ATAN[i];
+        }
+    }
+    input->x = ((long)x * input->r) >> CORDIC_MATH_FRACTION_BITS;
+    input->y = ((long)y * input->r) >> CORDIC_MATH_FRACTION_BITS;
+    return 0;
+}
+
+/*****************************************HYPERBOLIC MODE***********************************************/
 
 /**
  * @brief Fast fixedpoint calculation of squareroot using the cordic
