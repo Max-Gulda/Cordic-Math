@@ -65,8 +65,8 @@ The following image shows the precision of the Cordic algorithm. The left column
 - [x] Absolute
 - [x] Is Odd
 - [x] Is Even
-- [ ] Rectangular to Polar Conversion
-- [ ] Polar to Rectangular Conversion
+- [x] Rectangular to Polar Conversion
+- [x] Polar to Rectangular Conversion
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>

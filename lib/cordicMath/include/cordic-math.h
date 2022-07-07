@@ -1,7 +1,11 @@
 #pragma once
 
 #include "stdint.h"
-
+/**
+ * @brief CORDIC_MATH_FRACTION_BITS is the number of bits represented by the decimals.
+ * This variable can be changed but the recomended value is inbetween 8 and 22.
+ * Default is set to 16.
+ */
 #define CORDIC_MATH_FRACTION_BITS 16
 
 typedef struct {
