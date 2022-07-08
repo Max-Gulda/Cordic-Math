@@ -171,12 +171,15 @@ int main(void) {
     printf("Pow     : %f Cordic-Pow     : %f\n\n", log(89.3),
            cordic_ln(89.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
                pow(2, CORDIC_MATH_FRACTION_BITS));
+    
+    /*Rectangular to polar*/
     Coordinates cor;
     cor.x = 1 * (1 << CORDIC_MATH_FRACTION_BITS);
     cor.y = 1 * (1 << CORDIC_MATH_FRACTION_BITS);
     cordic_rectangular_polar(&cor);
     printf("Rectangular to polar\n r = %f   theta = %f\n",cor.r/pow(2, CORDIC_MATH_FRACTION_BITS),cor.theta/pow(2, CORDIC_MATH_FRACTION_BITS));
     
+    /*Polar to rectangular*/
     cordic_polar_rectangular(&cor);
     printf("Polar to rectangular\n x = %f   y = %f\n",cor.x/pow(2, CORDIC_MATH_FRACTION_BITS),cor.y/pow(2, CORDIC_MATH_FRACTION_BITS));
 
