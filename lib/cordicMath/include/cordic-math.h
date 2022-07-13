@@ -8,6 +8,7 @@
  * Default is set to 16.
  */
 #define CORDIC_MATH_FRACTION_BITS 16
+#define CORDIC_SPEED_FACTOR 15
 
 typedef struct {
 	int x;

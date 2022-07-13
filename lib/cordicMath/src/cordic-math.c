@@ -79,7 +79,7 @@ int32_t cordic_atan(int32_t y, int32_t x) {
         x = -x;
         y = -y;
     }
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (y > 0) {
             /* Rotate clockwise */
@@ -110,7 +110,7 @@ int32_t cordic_hypotenuse(int32_t y, int32_t x) {
     x = abs(x);
     y = abs(y);
 
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (y > 0) {
             /* Rotate clockwise */
@@ -145,7 +145,7 @@ int32_t cordic_cos(int32_t theta) {
         sumAngle = 360 << CORDIC_MATH_FRACTION_BITS;
     }
 
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (theta > sumAngle) {
             /* Rotate counter clockwise */
@@ -185,7 +185,7 @@ int32_t cordic_sin(int32_t theta) {
         sumAngle = 360 << CORDIC_MATH_FRACTION_BITS;
     }
 
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (theta > sumAngle) {
             /* Rotate counter clockwise */
@@ -219,7 +219,7 @@ int32_t cordic_asin(int32_t input) {
     int x = CORDIC_GAIN, y = 0, sumAngle = 0, tempX,
         ninety = (90 << CORDIC_MATH_FRACTION_BITS);
 
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (y < input) {
             /* Rotate counter clockwise */
@@ -252,7 +252,7 @@ int32_t cordic_acos(int32_t xInput) {
     int x = 0, y = CORDIC_GAIN, sumAngle = 90 << CORDIC_MATH_FRACTION_BITS,
         tempX;
 
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (x > xInput) {
             /* Rotate counter clockwise */
@@ -293,7 +293,7 @@ int32_t cordic_tan(int32_t theta) {
         sumAngle = 360 << CORDIC_MATH_FRACTION_BITS;
     }
 
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (theta > sumAngle) {
             /* Rotate counter clockwise */
@@ -427,7 +427,7 @@ int32_t cordic_sqrt(int32_t x) {
         }
         y = poweroftwo >> 1;
     }
-    for (int i = 1; i <= 15; i++) {
+    for (int i = 1; i <= CORDIC_SPEED_FACTOR; i++) {
         poweroftwo >>= 1;
         if (((long)(y + poweroftwo) * (y + poweroftwo) >>
              CORDIC_MATH_FRACTION_BITS) <= x) {
@@ -449,7 +449,7 @@ int32_t cordic_sqrt(int32_t x) {
 int32_t cordic_arctanh(int32_t y, int32_t x) {
     int tempX, k = 4, sumAngle = 0;
 
-    for (int i = 1; i < 15; i++) {
+    for (int i = 1; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (y < 0) {
             /* Rotate clockwise */
@@ -517,7 +517,7 @@ int32_t cordic_ln(int32_t input) {
 int32_t cordic_arccosh(int32_t x) {
     int tempX, k = 4, sumAngle = 0, y = DECIMAL_TO_FP, xt = x;
 
-    for (int i = 1; i < 15; i++) {
+    for (int i = 1; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (y < 0) {
             /* Rotate clockwise */
@@ -563,7 +563,7 @@ int32_t cordic_arccosh(int32_t x) {
 int32_t cordic_arcsinh(int32_t y) {
     int tempX, k = 4, sumAngle = 0, x = DECIMAL_TO_FP, yt = y;
 
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (y < 0) {
             /* Rotate clockwise */
@@ -594,7 +594,7 @@ int32_t cordic_arcsinh(int32_t y) {
 int32_t cordic_sinh(int32_t theta) {
     int tempX, k = 4, sumAngle = theta, y = 0,
                x = ONE_DIV_CORDIC_GAIN_HYPERBOLIC;
-    for (int i = 1; i < 15; i++) {
+    for (int i = 1; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (sumAngle > 0) {
             /* Rotate clockwise */
@@ -637,7 +637,7 @@ int32_t cordic_sinh(int32_t theta) {
 int32_t cordic_cosh(int32_t theta) {
     int tempX, k = 4, sumAngle = theta, y = 0,
                x = ONE_DIV_CORDIC_GAIN_HYPERBOLIC;
-    for (int i = 1; i < 15; i++) {
+    for (int i = 1; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (sumAngle > 0) {
             /* Rotate clockwise */
@@ -699,7 +699,7 @@ int32_t cordic_exp(int32_t exponent) {
         n++;
     }
 
-    for (int i = 1; i < 15; i++) {
+    for (int i = 1; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (sumAngle > 0) {
             /* Rotate clockwise */
