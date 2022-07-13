@@ -8,6 +8,11 @@
  * Default is set to 16.
  */
 #define CORDIC_MATH_FRACTION_BITS 16
+/**
+ * @brief CORDIC_SPEED_FACTOR is the number of loops the Cordic algorithm goes through. 
+ * Keep this variable between 8 and 15!
+ * This variable can be lowered to get more speed and less accuracy. Default is 15.
+ */
 #define CORDIC_SPEED_FACTOR 15
 
 typedef struct {
