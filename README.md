@@ -38,6 +38,9 @@ The code is built around the defined variable CORDIC_MATH_FRACTION_BITS in cordi
 
 ![My image](img/Screenshot-1.png)
 
+There is also another define in the cordic-math.h file which is named CORDIC_SPEED_FACTOR. If more speed is needed and accuracy is not as important this variable can be changed. It's recomended to not change this variable lower than 8 and higher than 15.
+
+![My image](img/Screenshot-4.png)
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Accuracy
