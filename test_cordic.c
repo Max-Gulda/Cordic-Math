@@ -56,12 +56,6 @@ typedef struct {
 
 } Coordinates;
 
-typedef struct {
-    int Re;
-    int Im;
-}Complex;
-
-
 int32_t cordic_atan(int32_t y, int32_t x);
 int32_t cordic_hypotenuse(int32_t y, int32_t x);
 int32_t cordic_cos(int32_t theta);
@@ -86,148 +80,110 @@ int32_t cordic_exp(int32_t exponent);
 int32_t cordic_pow(int32_t base, int32_t exponent);
 int32_t cordic_rectangular_polar(Coordinates *input);
 int32_t cordic_polar_rectangular(Coordinates *input);
-uint32_t floor_log2_32(uint32_t x);
-int ones_32(uint32_t n);
 
 int main(void) {
     /*Arctan*/
-//    printf("\nArctan  : %f Cordic-Arctan : %f\n\n",
-//           atan2(2.3, 4.2) * (180 / M_PI),
-//           cordic_atan((1 << CORDIC_MATH_FRACTION_BITS) * 2.3,
-//                       (1 << CORDIC_MATH_FRACTION_BITS) * 4.2) /
-//               pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-//    /*Hypotenuse*/
-//    printf("Hyp     : %f Cordic-Hyp     : %f\n\n",
-//           sqrt((2.3 * 2.3) + (4.2 * 4.2)),
-//           cordic_hypotenuse((1 << CORDIC_MATH_FRACTION_BITS) * 2.3,
-//                             (1 << CORDIC_MATH_FRACTION_BITS) * 4.2) /
-//               pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-//    /*Cosinus*/
-//    printf("Cosinus : %f Cordic-Cosinus : %f\n\n", cos(372*0.0174532925),
-//           cordic_cos(372 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-//               pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-//    /*Sinus*/
-//    printf("Sinus   : %f  Cordic-Sinus  : %f\n\n", sin(372*0.0174532925), //90 - 270
-//           cordic_sin(372 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-//               pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-//    /*Arc Sin*/
-//    printf("Arcsin  : %f Cordic-Arcsin : %f\n\n", asin(0.43) * (180 / M_PI),
-//           cordic_asin(0.43 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-//               pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-//    /*Arc Cos*/
-//    printf("Arccos  : %f Cordic-Arccos : %f\n\n", acos(0.43) * (180 / M_PI),
-//           cordic_acos(0.43 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-//               pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-//    /*Tangens*/
-//    printf("Tangen  : %f Cordic-Tangen  : %f\n\n", tan(25 * 0.0174532925),
-//           cordic_tan(25 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-//               pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-//    /*Square root*/
-//    printf("Sqrt    : %f Cordic-Sqrt    : %f\n\n", sqrt(89.3),
-//           cordic_sqrt(89.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-//               pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-    ///*Arctan H*/
-    //printf("Atanh   : %f Cordic-Atanh  : %f\n\n",
-    //       atanh(0.2411566291) * (180 / M_PI),
-    //       cordic_arctanh((1 << CORDIC_MATH_FRACTION_BITS) * 0.635590,
-    //                      (1 << CORDIC_MATH_FRACTION_BITS) * 2.635590) /
-    //           pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-    ///*Ln*/
-    //printf("Ln      : %f Cordic-Ln      : %f\n\n", log(89.3),
-    //       cordic_ln(89.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-    //           pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-    ///*Arccosh*/
-    //printf("Arccosh : %f Cordic-Acosh  : %f\n\n", acosh(2.3) * (180 / M_PI),
-    //       cordic_arccosh(2.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-    //           pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-    ///*Arcsinh*/
-    //printf("Arcsinh : %f Cordic-Asinh  : %f\n\n", asinh(2.3) * (180 / M_PI),
-    //       cordic_arcsinh(2.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-    //           pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-    ///*Sinh*/
-    //printf("Sinush  : %f  Cordic-Sinush : %f\n\n", sinh(2.3 * M_PI / 180),
-    //       cordic_sinh(2.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-    //           pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-    ///*Cosh*/
-    //printf("Coshh   : %f  Cordic-Cosh   : %f\n\n", cosh(24.7 * M_PI / 180),
-    //       cordic_cosh(24.7 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-    //           pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-    ///*Tanh*/
-    //printf("Tanh    : %f  Cordic-Tanh   : %f\n\n", tanh(23.2 * M_PI / 180),
-    //       cordic_tanh(23.2 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-    //           pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-    ///*Exp*/
-    //printf("Exp     : %f Cordic-Exp    : %f\n\n", exp(3.39),
-    //       cordic_exp(3.39 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-    //           pow(2, CORDIC_MATH_FRACTION_BITS));
-//
-    ///*Pow*/
-    //printf("Pow     : %f Cordic-Pow     : %f\n\n", log(89.3),
-    //       cordic_ln(89.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
-    //           pow(2, CORDIC_MATH_FRACTION_BITS));
-    //
-    ///*Rectangular to polar*/
-    //Coordinates cor;
-    //cor.x = 1 * (1 << CORDIC_MATH_FRACTION_BITS);
-    //cor.y = 1 * (1 << CORDIC_MATH_FRACTION_BITS);
-    //cordic_rectangular_polar(&cor);
-    //printf("Rectangular to polar\n r = %f   theta = %f\n",cor.r/pow(2, CORDIC_MATH_FRACTION_BITS),cor.theta/pow(2, CORDIC_MATH_FRACTION_BITS));
-    //
-    ///*Polar to rectangular*/
-    //cordic_polar_rectangular(&cor);
-    //printf("Polar to rectangular\n x = %f   y = %f\n",cor.x/pow(2, CORDIC_MATH_FRACTION_BITS),cor.y/pow(2, CORDIC_MATH_FRACTION_BITS));
-    int N = 16;
-    int M = floor_log2_32(N);
-    int l, j, tR, tI,k,ip, i ;
-    Complex x[24];
-    for (i = 0; i < 16; i++) {
-        x[i].Re = i+1;
-    }
+    printf("\nArctan  : %f Cordic-Arctan : %f\n\n",
+           atan2(2.3, 4.2) * (180 / M_PI),
+           cordic_atan((1 << CORDIC_MATH_FRACTION_BITS) * 2.3,
+                       (1 << CORDIC_MATH_FRACTION_BITS) * 4.2) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
 
-    l = N >> 1;
-    j = l;
-    ip = N - 2;
-    printf("ip = %d\n", ip);
-    for (i = 1; i <= ip; i++) {
-        if (i < j) {
-            tR = x[j].Re;
-            tI = x[j].Im;
-            x[j].Re = x[i].Re;
-            x[j].Im = x[i].Im;
-            x[i].Re = tR;
-            x[i].Im = tI;
-        }
-        k = l;
-        while (k <= j) {
-            j = j - k;
-            k = k >> 1;
-        }
-        j = j + k;
-    }
-    printf("real:\n");
-    for (int i = 0; i < 16; i++) {
-        printf("%d\n", x[i].Re);
-        printf("%d\n", x[i].Im);
-    }
-    //printf("imag:\n");
-    //for (int i = 0; i < 16; i++) {
-    //    printf("%d\n", x[i].Im);
-    //}
+    /*Hypotenuse*/
+    printf("Hyp     : %f Cordic-Hyp     : %f\n\n",
+           sqrt((2.3 * 2.3) + (4.2 * 4.2)),
+           cordic_hypotenuse((1 << CORDIC_MATH_FRACTION_BITS) * 2.3,
+                             (1 << CORDIC_MATH_FRACTION_BITS) * 4.2) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Cosinus*/
+    printf("Cosinus : %f Cordic-Cosinus : %f\n\n", cos(372*0.0174532925),
+           cordic_cos(372 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Sinus*/
+    printf("Sinus   : %f  Cordic-Sinus  : %f\n\n", sin(372*0.0174532925), //90 - 270
+           cordic_sin(372 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Arc Sin*/
+    printf("Arcsin  : %f Cordic-Arcsin : %f\n\n", asin(0.43) * (180 / M_PI),
+           cordic_asin(0.43 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Arc Cos*/
+    printf("Arccos  : %f Cordic-Arccos : %f\n\n", acos(0.43) * (180 / M_PI),
+           cordic_acos(0.43 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Tangens*/
+    printf("Tangen  : %f Cordic-Tangen  : %f\n\n", tan(25 * 0.0174532925),
+           cordic_tan(25 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Square root*/
+    printf("Sqrt    : %f Cordic-Sqrt    : %f\n\n", sqrt(89.3),
+           cordic_sqrt(89.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Arctan H*/
+    printf("Atanh   : %f Cordic-Atanh  : %f\n\n",
+           atanh(0.2411566291) * (180 / M_PI),
+           cordic_arctanh((1 << CORDIC_MATH_FRACTION_BITS) * 0.635590,
+                          (1 << CORDIC_MATH_FRACTION_BITS) * 2.635590) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Ln*/
+    printf("Ln      : %f Cordic-Ln      : %f\n\n", log(89.3),
+           cordic_ln(89.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Arccosh*/
+    printf("Arccosh : %f Cordic-Acosh  : %f\n\n", acosh(2.3) * (180 / M_PI),
+           cordic_arccosh(2.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Arcsinh*/
+    printf("Arcsinh : %f Cordic-Asinh  : %f\n\n", asinh(2.3) * (180 / M_PI),
+           cordic_arcsinh(2.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Sinh*/
+    printf("Sinush  : %f  Cordic-Sinush : %f\n\n", sinh(2.3 * M_PI / 180),
+           cordic_sinh(2.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Cosh*/
+    printf("Coshh   : %f  Cordic-Cosh   : %f\n\n", cosh(24.7 * M_PI / 180),
+           cordic_cosh(24.7 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Tanh*/
+    printf("Tanh    : %f  Cordic-Tanh   : %f\n\n", tanh(23.2 * M_PI / 180),
+           cordic_tanh(23.2 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Exp*/
+    printf("Exp     : %f Cordic-Exp    : %f\n\n", exp(3.39),
+           cordic_exp(3.39 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+
+    /*Pow*/
+    printf("Pow     : %f Cordic-Pow     : %f\n\n", log(89.3),
+           cordic_ln(89.3 * (1 << CORDIC_MATH_FRACTION_BITS)) /
+               pow(2, CORDIC_MATH_FRACTION_BITS));
+    
+    /*Rectangular to polar*/
+    Coordinates cor;
+    cor.x = 1 * (1 << CORDIC_MATH_FRACTION_BITS);
+    cor.y = 1 * (1 << CORDIC_MATH_FRACTION_BITS);
+    cordic_rectangular_polar(&cor);
+    printf("Rectangular to polar\n r = %f   theta = %f\n",cor.r/pow(2, CORDIC_MATH_FRACTION_BITS),cor.theta/pow(2, CORDIC_MATH_FRACTION_BITS));
+    
+    /*Polar to rectangular*/
+    cordic_polar_rectangular(&cor);
+    printf("Polar to rectangular\n x = %f   y = %f\n",cor.x/pow(2, CORDIC_MATH_FRACTION_BITS),cor.y/pow(2, CORDIC_MATH_FRACTION_BITS));
+
 }
 
 int32_t cordic_atan(int32_t y, int32_t x) {
@@ -791,22 +747,4 @@ int32_t to_degree(int32_t input) {
 
 int32_t to_radians(int32_t input) {
     return (((long)input << CORDIC_MATH_FRACTION_BITS) / ONE_EIGHTY_DIV_PI);
-}
-
-int ones_32(uint32_t n) {
-    unsigned int c = 0;
-    for (c = 0; n; ++c) {
-        n &= (n - 1);
-    }
-    return c;
-}
-
-uint32_t floor_log2_32(uint32_t x) {
-    x |= (x >> 1);
-    x |= (x >> 2);
-    x |= (x >> 4);
-    x |= (x >> 8);
-    x |= (x >> 16);
-
-    return (ones_32(x >> 1));
 }
