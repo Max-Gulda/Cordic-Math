@@ -2,10 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct {
+    float real;
+    float imag;
+}Complex;
+
 int ones_32(int32_t n);
 int32_t floor_log2_32(int32_t x);
-int fft_float (Complex *x, int32_t N);
-int inverse_fft (Complex *x, int32_t N);
+int fft_float (Complex x[], int32_t N);
+int inverse_fft (Complex x[], int32_t N);
 
 const float sin_tb[] = {  //(PI PI/2 PI/4 PI/8 PI/16 ... PI/(2^k))
     0.000000, 1.000000, 0.707107, 0.382683, 0.195090, 0.098017, 0.049068,
@@ -17,12 +22,9 @@ const float cos_tb[] = {  //(PI PI/2 PI/4 PI/8 PI/16 ... PI/(2^k))
     0.999699,  0.999925, 0.999981, 0.999995, 0.999999, 1.000000, 1.000000,
     1.000000,  1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000};
 
-typedef struct {
-    float real;
-    float imag;
-} Complex;
 
-#define  SAMPLE_NODES              (128)
+
+#define  SAMPLE_NODES              (32)
 #define PI                         (3.14159265f)
 
 
@@ -42,9 +44,10 @@ int main(void) {
     for (int i=0; i<SAMPLE_NODES; i++) {
         printf("%.5f %.5f\n", x[i].real, x[i].imag);
     }
+    printf("\n\n\n\n");
     inverse_fft(x,SAMPLE_NODES);  
     for (int i=0; i<SAMPLE_NODES; i++) {
-        printf("%.5f %.5f\n", x[i].real, x[i].imag);
+        printf(" %.5f %.5f\n",  x[i].real, x[i].imag);
     } 
 }
 
@@ -66,7 +69,7 @@ int32_t floor_log2_32(int32_t x) {
     return (ones_32(x >> 1));
 }
 
-int fft_float(Complex *x, int32_t N) {
+int fft_float(Complex x[], int32_t N) {
     int i, j, l, k, ip;
     static int32_t M = 0;
     static int le, le2;
@@ -128,7 +131,7 @@ int fft_float(Complex *x, int32_t N) {
     return 0;
 }
 
-int inverse_fft (Complex *x, int32_t N) {
+int inverse_fft (Complex x[], int32_t N) {
     int k = 0;
 
     for (k = 0; k <= N - 1; k++) {
