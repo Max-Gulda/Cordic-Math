@@ -30,20 +30,35 @@ int main(void) {
     Complex reference[SAMPLE_NODES];
 
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        x[i].real = sin(PI * 8 * i / SAMPLE_NODES);
+        x[i].real = 0.7*sin(2*PI*5*i/SAMPLE_NODES) + sin(2*PI*3*i/SAMPLE_NODES);
         x[i].imag = 0.0f;
         // reference[i] = x[i];
     }
+    //for (int i = 0; i < SAMPLE_NODES; i++) {
+    //    printf(" %.5f %.5f\n", x[i].real, x[i].imag);
+    //}
+    printf("\n\n\n\n");
+
     fft(x, SAMPLE_NODES);
 
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        printf("%.5f %.5f\n", x[i].real, x[i].imag);
+        if(x[i].real<0){
+            x[i].real *= -1;
+        }
+        if(x[i].imag<0){
+            x[i].imag *= -1;
+        }
+
+        printf("%d\t : %.5f %.5f\n", i, x[i].real*0.015625, x[i].imag*0.015625);
     }
     printf("\n\n\n\n");
+
     inverse_fft(x, SAMPLE_NODES);
-    for (int i = 0; i < SAMPLE_NODES; i++) {
-        printf(" %.5f %.5f\n", x[i].real, x[i].imag);
-    }
+
+    //for (int i = 0; i < SAMPLE_NODES; i++) {
+    //    printf(" %.5f %.5f\n", x[i].real, x[i].imag);
+    //}
+
 }
 
 int ones_32(int32_t n) {
