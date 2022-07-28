@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int ones_32(uint32_t n);
-uint32_t floor_log2_32(uint32_t x);
-int fft(COMPLEX *x, uint32_t N);
-int ifft(COMPLEX *x, uint32_t N);
+int ones_32(int32_t n);
+int32_t floor_log2_32(int32_t x);
+int fft (Complex *x, int32_t N);
+int ifft (Complex *x, int32_t N);
 
 const float sin_tb[] = {  //(PI PI/2 PI/4 PI/8 PI/16 ... PI/(2^k))
     0.000000, 1.000000, 0.707107, 0.382683, 0.195090, 0.098017, 0.049068,
@@ -20,11 +20,34 @@ const float cos_tb[] = {  //(PI PI/2 PI/4 PI/8 PI/16 ... PI/(2^k))
 typedef struct {
     float real;
     float imag;
-} COMPLEX;
+} Complex;
 
-int main(void) {}
+#define  SAMPLE_NODES              (128)
+#define PI                         (3.14159265f)
+Complex x[SAMPLE_NODES];
+Complex reference[SAMPLE_NODES];
 
-int ones_32(uint32_t n) {
+int main(void) {
+
+
+    for (int i=0;i<SAMPLE_NODES;i++ )  
+    {  
+        x[i].real = sin(PI*8*i/SAMPLE_NODES);  
+        x[i].imag  = 0.0f;  
+        reference[i] = x[i];
+    }  
+    fft(x,SAMPLE_NODES);
+
+    for (int i=0; i<SAMPLE_NODES; i++) {
+        printf("%.5f %.5f\n", x[i].real, x[i].imag);
+    }
+    ifft(x,SAMPLE_NODES);  
+    for (int i=0; i<SAMPLE_NODES; i++) {
+        printf("%.5f %.5f\n", x[i].real, x[i].imag);
+    } 
+}
+
+int ones_32(int32_t n) {
     unsigned int c = 0;
     for (c = 0; n; ++c) {
         n &= (n - 1);
@@ -32,7 +55,7 @@ int ones_32(uint32_t n) {
     return c;
 }
 
-uint32_t floor_log2_32(uint32_t x) {
+int32_t floor_log2_32(int32_t x) {
     x |= (x >> 1);
     x |= (x >> 2);
     x |= (x >> 4);
@@ -42,9 +65,9 @@ uint32_t floor_log2_32(uint32_t x) {
     return (ones_32(x >> 1));
 }
 
-int fft(COMPLEX *x, uint32_t N) {
+int fft(Complex *x, int32_t N) {
     int i, j, l, k, ip;
-    static uint32_t M = 0;
+    static int32_t M = 0;
     static int le, le2;
     static float sR, sI, tR, tI, uR, uI;
 
@@ -104,7 +127,7 @@ int fft(COMPLEX *x, uint32_t N) {
     return 0;
 }
 
-int ifft(COMPLEX *x, uint32_t N) {
+int ifft (Complex *x, int32_t N) {
     int k = 0;
 
     for (k = 0; k <= N - 1; k++) {
