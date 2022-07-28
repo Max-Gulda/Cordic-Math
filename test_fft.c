@@ -22,7 +22,7 @@ const float cos_tb[] = {  //(PI PI/2 PI/4 PI/8 PI/16 ... PI/(2^k))
     0.999699,  0.999925, 0.999981, 0.999995, 0.999999, 1.000000, 1.000000,
     1.000000,  1.000000, 1.000000, 1.000000, 1.000000, 1.000000, 1.000000};
 
-#define SAMPLE_NODES (128)
+#define SAMPLE_NODES (32)
 #define PI (3.14159265f)
 
 int main(void) {
@@ -30,13 +30,13 @@ int main(void) {
     Complex reference[SAMPLE_NODES];
 
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        x[i].real = 0.7*sin(2*PI*5*i/SAMPLE_NODES) + sin(2*PI*3*i/SAMPLE_NODES);
+        x[i].real = (0.7*sin(2*5*PI*i/SAMPLE_NODES) + sin(2*PI*3*i/SAMPLE_NODES));
         x[i].imag = 0.0f;
         // reference[i] = x[i];
     }
-    //for (int i = 0; i < SAMPLE_NODES; i++) {
-    //    printf(" %.5f %.5f\n", x[i].real, x[i].imag);
-    //}
+    for (int i = 0; i < SAMPLE_NODES; i++) {
+        printf("%d\t : %.5f %.5f\n", i,x[i].real, x[i].imag);
+    }
     printf("\n\n\n\n");
 
     fft(x, SAMPLE_NODES);
@@ -49,7 +49,7 @@ int main(void) {
             x[i].imag *= -1;
         }
 
-        printf("%d\t : %.5f %.5f\n", i, x[i].real*0.015625, x[i].imag*0.015625);
+        printf("%d\t : %.5f %.5f\n", i, x[i].real*2/SAMPLE_NODES, x[i].imag*2/SAMPLE_NODES);
     }
     printf("\n\n\n\n");
 
@@ -125,16 +125,16 @@ int fft(Complex x[], int32_t N) {
         for (j = 1; j <= le2; j++) {          /* loop for each sub DFT */
             for (i = j - 1; i < N; i += le) { /* loop for each butterfly */
                 ip = i + le2;
-                tR = x[ip].real * uR - x[ip].imag * uI;
-                tI = x[ip].real * uI + x[ip].imag * uR;
+                tR = (x[ip].real * uR) - (x[ip].imag * uI);
+                tI = (x[ip].real * uI) + (x[ip].imag * uR);
                 x[ip].real = x[i].real - tR;
                 x[ip].imag = x[i].imag - tI;
                 x[i].real += tR;
                 x[i].imag += tI;
             } /* Next i */
             tR = uR;
-            uR = tR * sR - uI * sI;
-            uI = tR * sI + uI * sR;
+            uR = (tR * sR) - (uI * sI);
+            uI = (tR * sI) + (uI * sR);
         } /* Next j */
     }     /* Next l */
 
