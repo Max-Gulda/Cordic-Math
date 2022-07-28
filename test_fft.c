@@ -4,8 +4,8 @@
 
 int ones_32(int32_t n);
 int32_t floor_log2_32(int32_t x);
-int fft (Complex *x, int32_t N);
-int ifft (Complex *x, int32_t N);
+int fft_float (Complex *x, int32_t N);
+int inverse_fft (Complex *x, int32_t N);
 
 const float sin_tb[] = {  //(PI PI/2 PI/4 PI/8 PI/16 ... PI/(2^k))
     0.000000, 1.000000, 0.707107, 0.382683, 0.195090, 0.098017, 0.049068,
@@ -24,11 +24,12 @@ typedef struct {
 
 #define  SAMPLE_NODES              (128)
 #define PI                         (3.14159265f)
-Complex x[SAMPLE_NODES];
-Complex reference[SAMPLE_NODES];
+
 
 int main(void) {
 
+    Complex x[SAMPLE_NODES];
+    Complex reference[SAMPLE_NODES];
 
     for (int i=0;i<SAMPLE_NODES;i++ )  
     {  
@@ -36,12 +37,12 @@ int main(void) {
         x[i].imag  = 0.0f;  
         reference[i] = x[i];
     }  
-    fft(x,SAMPLE_NODES);
+    fft_float(x,SAMPLE_NODES);
 
     for (int i=0; i<SAMPLE_NODES; i++) {
         printf("%.5f %.5f\n", x[i].real, x[i].imag);
     }
-    ifft(x,SAMPLE_NODES);  
+    inverse_fft(x,SAMPLE_NODES);  
     for (int i=0; i<SAMPLE_NODES; i++) {
         printf("%.5f %.5f\n", x[i].real, x[i].imag);
     } 
@@ -65,7 +66,7 @@ int32_t floor_log2_32(int32_t x) {
     return (ones_32(x >> 1));
 }
 
-int fft(Complex *x, int32_t N) {
+int fft_float(Complex *x, int32_t N) {
     int i, j, l, k, ip;
     static int32_t M = 0;
     static int le, le2;
@@ -127,14 +128,14 @@ int fft(Complex *x, int32_t N) {
     return 0;
 }
 
-int ifft (Complex *x, int32_t N) {
+int inverse_fft (Complex *x, int32_t N) {
     int k = 0;
 
     for (k = 0; k <= N - 1; k++) {
         x[k].imag = -x[k].imag;
     }
 
-    fft(x, N); /* using FFT */
+    fft_float(x, N); /* using FFT */
 
     for (k = 0; k <= N - 1; k++) {
         x[k].real = x[k].real / N;
