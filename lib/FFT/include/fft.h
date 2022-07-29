@@ -2,7 +2,6 @@
 
 #include "stdint.h"
 
-
 #define FFT_MATH_FRACTION_BITS 16
 
 typedef struct {

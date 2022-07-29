@@ -27,97 +27,92 @@ const float cos_tb[] = {  //(PI PI/2 PI/4 PI/8 PI/16 ... PI/(2^k))
 
 int main(void) {
     Complex x[SAMPLE_NODES];
-    Complex reference[SAMPLE_NODES];
 
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        x[i].real = (0.7*sin(2*5*PI*i/SAMPLE_NODES) + sin(2*PI*3*i/SAMPLE_NODES));
+        x[i].real = (0.7 * sin(2 * 5 * PI * i / SAMPLE_NODES) +
+                     sin(2 * PI * 3 * i / SAMPLE_NODES));
         x[i].imag = 0.0f;
-        // reference[i] = x[i];
     }
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        printf("%d\t : %.5f %.5f\n", i,x[i].real, x[i].imag);
+        printf("%d\t : %.5f %.5f\n", i, x[i].real, x[i].imag);
     }
     printf("\n\n\n\n");
 
     fft(x, SAMPLE_NODES);
 
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        //printf("%d\t : %.5f %.5f\n", i, x[i].real*2/SAMPLE_NODES, x[i].imag*2/SAMPLE_NODES);
+        printf("%d\t : %.5f %.5f\n", i, x[i].real * 2 / SAMPLE_NODES,
+               x[i].imag * 2 / SAMPLE_NODES);
     }
-    //printf("\n\n\n\n");
-    
+    printf("\n\n\n\n");
 
     inverse_fft(x, SAMPLE_NODES);
 
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        //printf("%d\t : %.5f %.5f\n", i , x[i].real, x[i].imag);
+        printf("%d\t : %.5f %.5f\n", i, x[i].real, x[i].imag);
     }
-
 }
 
-int fft(Complex x[], int32_t N)
-{
-	int i,j,l,k,ip;
-	static int32_t M = 0;
-	static int le,le2;
-	static float sR,sI,tR,tI,uR,uI;
+int fft(Complex x[], int32_t N) {
+    int i, j, l, k, ip;
+    static int32_t M = 0;
+    static int le, le2;
+    static float sR, sI, tR, tI, uR, uI;
 
-	M = floor_log2_32(N);
-	/*
-	 * bit reversal sorting
-	 */
-	l = N >> 1;
-	j = l;
-    ip = N-2;
-    for (i=1; i<=ip; i++) {
+    M = floor_log2_32(N);
+    /*
+     * bit reversal sorting
+     */
+    l = N >> 1;
+    j = l;
+    ip = N - 2;
+    for (i = 1; i <= ip; i++) {
         if (i < j) {
             tR = x[j].real;
-			tI = x[j].imag;
+            tI = x[j].imag;
             x[j].real = x[i].real;
-			x[j].imag = x[i].imag;
+            x[j].imag = x[i].imag;
             x[i].real = tR;
-			x[i].imag = tI;
-		}
-		k = l;
-		while (k <= j) {
+            x[i].imag = tI;
+        }
+        k = l;
+        while (k <= j) {
             j = j - k;
-			k = k >> 1;
-		}
-		j = j + k;
-	}
+            k = k >> 1;
+        }
+        j = j + k;
+    }
 
-	/*
-	 * For Loops
-	 */
-	for (l=1; l<=M; l++) {   /* loop for ceil{log2(N)} */
-		//le = (int)pow(2,l);
-		le  = (int)(1 << l);
-		le2 = (int)(le >> 1);
-		uR = 1;
-		uI = 0;
+    /*
+     * For Loops
+     */
+    for (l = 1; l <= M; l++) { /* loop for ceil{log2(N)} */
+        le = (int)(1 << l);
+        le2 = (int)(le >> 1);
+        uR = 1;
+        uI = 0;
 
         k = floor_log2_32(le2);
-        sR = cos_tb[k]; //cos(PI / le2);
-        sI = -sin_tb[k];  // -sin(PI / le2)
-		for (j=1; j<=le2; j++) {   /* loop for each sub DFT */
-			//jm1 = j - 1;
-			for (i=j-1; i<N; i+=le) {  /* loop for each butterfly */
-				ip = i + le2;
-				tR = x[ip].real * uR - x[ip].imag * uI;
-				tI = x[ip].real * uI + x[ip].imag * uR;
-				x[ip].real = x[i].real - tR;
-				x[ip].imag = x[i].imag - tI;
-				x[i].real += tR;
-				x[i].imag += tI;
-			}  /* Next i */
-			tR = uR;
-            printf("tR = %.5f\n",tR);
-			uR = tR * sR - uI * sI;
-			uI = tR * sI + uI *sR;
-		} /* Next j */
-	} /* Next l */
+        sR = cos_tb[k];                       // cos(PI / le2);
+        sI = -sin_tb[k];                      // -sin(PI / le2)
+        for (j = 1; j <= le2; j++) {          /* loop for each sub DFT */
+            for (i = j - 1; i < N; i += le) { /* loop for each butterfly */
+                ip = i + le2;
+                tR = x[ip].real * uR - x[ip].imag * uI;
+                tI = x[ip].real * uI + x[ip].imag * uR;
+                x[ip].real = x[i].real - tR;
+                x[ip].imag = x[i].imag - tI;
+                x[i].real += tR;
+                x[i].imag += tI;
+            } /* Next i */
+            tR = uR;
+            printf("tR = %.5f\n", tR);
+            uR = tR * sR - uI * sI;
+            uI = tR * sI + uI * sR;
+        } /* Next j */
+    }     /* Next l */
 
-	return 0;
+    return 0;
 }
 
 int inverse_fft(Complex x[], int32_t N) {
