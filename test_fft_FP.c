@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief FFT_MATH_FRACTION_BITS currently does not work for the value 16
+ */
 #define FFT_MATH_FRACTION_BITS 8
 #define SAMPLE_NODES (16)
 #define PI (3.14159265f)
@@ -97,7 +100,18 @@ int main(void) {
                x[i].imag / pow(2, FFT_MATH_FRACTION_BITS));
     }
 }
-
+/**
+ * @brief Simple Fast Fourier Transform also known as FFT. 
+ * 
+ * @param x is a fixedpoint array of the complex datatype defined in fft.h,
+ * the answer of the FFT will be in this array. The data in this
+ * array will be deleted, make sure to save the data if you need it.
+ * 
+ * @param N is the length of the array. NOTE this variable need to
+ * be a number 2^k.
+ * 
+ * @return The function returns 0, the answer is in the array. 
+ */
 int fft(Complex x[], int32_t N) {
     int i, j, l, k, ip;
     static int32_t M = 0;
@@ -138,8 +152,8 @@ int fft(Complex x[], int32_t N) {
         uI = 0 << FFT_MATH_FRACTION_BITS;
 
         k = floor_log2_32(le2);
-        sR = cos_tb[k];                       // cos(PI / le2);
-        sI = -sin_tb[k];                      // -sin(PI / le2)
+        sR = cos_tb[k]; 
+        sI = -sin_tb[k];
         for (j = 1; j <= le2; j++) {          /* loop for each sub DFT */
             for (i = j - 1; i < N; i += le) { /* loop for each butterfly */
                 ip = i + le2;
@@ -180,6 +194,12 @@ int inverse_fft(Complex x[], int32_t N) {
     return 0;
 }
 
+/**
+ * @brief Returns the number of ones bitwise in an function. 
+ * 
+ * @param n the number.
+ * @return int number of ones.
+ */
 int ones_32(int32_t n) {
     unsigned int c = 0;
     for (c = 0; n; ++c) {
@@ -188,6 +208,12 @@ int ones_32(int32_t n) {
     return c;
 }
 
+/**
+ * @brief Returns the floor log2 of a number
+ * 
+ * @param x the number
+ * @return floor log2 of x
+ */
 int32_t floor_log2_32(int32_t x) {
     x |= (x >> 1);
     x |= (x >> 2);
