@@ -69,7 +69,7 @@ int main(void) {
 
     for (int i = 0; i < SAMPLE_NODES; i++) {
         x[i].real = (0.7 * sin(2 * 5 * PI * i / SAMPLE_NODES) +
-                     sin(2 * PI * 3 * i / SAMPLE_NODES)) *
+                    sin(2 * PI * 9 * i / SAMPLE_NODES)) *
                     (1 << FFT_MATH_FRACTION_BITS);
         x[i].imag = 0;
     }
