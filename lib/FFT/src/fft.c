@@ -2,63 +2,63 @@
 
 #define FLOAT_TO_INT(x) ((x) >= 0 ? (int)((x) + 0.5) : (int)((x)-0.5))
 
-static const int sin_tb[] = {  //(PI PI/2 PI/4 PI/8 PI/16 ... PI/(2^k))
-                        FLOAT_TO_INT( 0.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.707107 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.382683 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.195090 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.098017 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.049068 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.024541 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.012272 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.006136 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.003068 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.001534 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.000767 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.000383 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.000192 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.000096 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.000048 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.000024 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.000012 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.000006 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.000003 * (1 << FFT_MATH_FRACTION_BITS))};
+static const int sin_tb[] = {
+    FLOAT_TO_INT(0.000000 * (1 << FFT_MATH_FRACTION_BITS)), //PI
+    FLOAT_TO_INT(1.000000 * (1 << FFT_MATH_FRACTION_BITS)), //PI/2
+    FLOAT_TO_INT(0.707107 * (1 << FFT_MATH_FRACTION_BITS)), //PI/4
+    FLOAT_TO_INT(0.382683 * (1 << FFT_MATH_FRACTION_BITS)), //PI/8
+    FLOAT_TO_INT(0.195090 * (1 << FFT_MATH_FRACTION_BITS)), //PI/16
+    FLOAT_TO_INT(0.098017 * (1 << FFT_MATH_FRACTION_BITS)), //...
+    FLOAT_TO_INT(0.049068 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.024541 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.012272 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.006136 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.003068 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.001534 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.000767 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.000383 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.000192 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.000096 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.000048 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.000024 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.000012 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT(0.000006 * (1 << FFT_MATH_FRACTION_BITS)),  //...
+    FLOAT_TO_INT(0.000003 * (1 << FFT_MATH_FRACTION_BITS))}; //PI/(2^K)
 
-static const int cos_tb[] = {  //(PI PI/2 PI/4 PI/8 PI/16 ... PI/(2^k))
-                        FLOAT_TO_INT(-1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.707107 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.923880 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.980785 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.995185 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.998795 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.999699 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.999925 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.999981 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.999995 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 0.999999 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-                        FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS))};
+static const int cos_tb[] = {
+    FLOAT_TO_INT(-1.000000 * (1 << FFT_MATH_FRACTION_BITS)), //PI
+    FLOAT_TO_INT( 0.000000 * (1 << FFT_MATH_FRACTION_BITS)), //PI/2
+    FLOAT_TO_INT( 0.707107 * (1 << FFT_MATH_FRACTION_BITS)), //PI/4
+    FLOAT_TO_INT( 0.923880 * (1 << FFT_MATH_FRACTION_BITS)), //PI/8
+    FLOAT_TO_INT( 0.980785 * (1 << FFT_MATH_FRACTION_BITS)), //PI/16
+    FLOAT_TO_INT( 0.995185 * (1 << FFT_MATH_FRACTION_BITS)), //...
+    FLOAT_TO_INT( 0.998795 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 0.999699 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 0.999925 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 0.999981 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 0.999995 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 0.999999 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),  //...
+    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS))}; //PI/(2^K)
 
 /**
- * @brief Simple Fast Fourier Transform also known as FFT. 
- * 
+ * @brief Simple Fast Fourier Transform also known as FFT.
+ *
  * @param x is a fixedpoint array of the complex datatype defined in fft.h,
  * the answer of the FFT will be in this array. The data in this
  * array will be deleted, make sure to save the data if you need it.
- * 
+ *
  * @param N is the length of the array. NOTE this variable need to
  * be a number 2^k.
- * 
- * @return The function returns 0, the answer is in the array. 
+ *
+ * @return The function returns 0, the answer is in the array.
  */
 int fft(Complex x[], int32_t N) {
     int i, j, l, k, ip;
@@ -101,7 +101,7 @@ int fft(Complex x[], int32_t N) {
         uI = 0 << FFT_MATH_FRACTION_BITS;
 
         k = floor_log2_32(le2);
-        sR = cos_tb[k]; 
+        sR = cos_tb[k];
         sI = -sin_tb[k];
         for (j = 1; j <= le2; j++) {          /* loop for each sub DFT */
             for (i = j - 1; i < N; i += le) { /* loop for each butterfly */
@@ -145,8 +145,8 @@ int inverse_fft(Complex x[], int32_t N) {
 }
 
 /**
- * @brief Returns the number of ones bitwise in an function. 
- * 
+ * @brief Returns the number of ones bitwise in an function.
+ *
  * @param n the number.
  * @return int number of ones.
  */
@@ -160,7 +160,7 @@ int ones_32(int32_t n) {
 
 /**
  * @brief Returns the floor log2 of a number
- * 
+ *
  * @param x the number
  * @return floor log2 of x
  */
