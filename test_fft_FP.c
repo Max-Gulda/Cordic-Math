@@ -2,10 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/**
- * @brief FFT_MATH_FRACTION_BITS currently does not work for the value 16
- */
-#define FFT_MATH_FRACTION_BITS 8
+#define FFT_MATH_FRACTION_BITS 16
 #define SAMPLE_NODES (16)
 #define PI (3.14159265f)
 
@@ -116,7 +113,8 @@ int fft(Complex x[], int32_t N) {
     int i, j, l, k, ip;
     static int32_t M = 0;
     static int le, le2;
-    static int sR, sI, tR, tI, uR, uI;
+    static int sR, sI;
+    static int uR, uI, tR, tI;
 
     M = floor_log2_32(N);
     /*
@@ -157,15 +155,16 @@ int fft(Complex x[], int32_t N) {
         for (j = 1; j <= le2; j++) {          /* loop for each sub DFT */
             for (i = j - 1; i < N; i += le) { /* loop for each butterfly */
                 ip = i + le2;
-                tR = ((long)(x[ip].real * uR) >> FFT_MATH_FRACTION_BITS) -
-                     (((long)x[ip].imag * uI) >> FFT_MATH_FRACTION_BITS);
-                tI = (((long)x[ip].real * uI) >> FFT_MATH_FRACTION_BITS) +
-                     (((long)x[ip].imag * uR) >> FFT_MATH_FRACTION_BITS);
+                tR = (((long)uR * x[ip].real) >> FFT_MATH_FRACTION_BITS) -
+                     (((long)uI * x[ip].imag) >> FFT_MATH_FRACTION_BITS);
+                tI = (((long)uI * x[ip].real) >> FFT_MATH_FRACTION_BITS) +
+                     (((long)uR * x[ip].imag) >> FFT_MATH_FRACTION_BITS);
                 x[ip].real = x[i].real - tR;
                 x[ip].imag = x[i].imag - tI;
                 x[i].real += tR;
                 x[i].imag += tI;
             } /* Next i */
+            /* Calculation of twiddle factor */
             tR = uR;
             uR = (((long)tR * sR) >> FFT_MATH_FRACTION_BITS) -
                  (((long)uI * sI) >> FFT_MATH_FRACTION_BITS);

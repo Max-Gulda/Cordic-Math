@@ -48,11 +48,24 @@ static const int cos_tb[] = {  //(PI PI/2 PI/4 PI/8 PI/16 ... PI/(2^k))
                         FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
                         FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS))};
 
+/**
+ * @brief Simple Fast Fourier Transform also known as FFT. 
+ * 
+ * @param x is a fixedpoint array of the complex datatype defined in fft.h,
+ * the answer of the FFT will be in this array. The data in this
+ * array will be deleted, make sure to save the data if you need it.
+ * 
+ * @param N is the length of the array. NOTE this variable need to
+ * be a number 2^k.
+ * 
+ * @return The function returns 0, the answer is in the array. 
+ */
 int fft(Complex x[], int32_t N) {
     int i, j, l, k, ip;
     static int32_t M = 0;
     static int le, le2;
-    static int sR, sI, tR, tI, uR, uI;
+    static int sR, sI;
+    static int uR, uI, tR, tI;
 
     M = floor_log2_32(N);
     /*
@@ -88,20 +101,21 @@ int fft(Complex x[], int32_t N) {
         uI = 0 << FFT_MATH_FRACTION_BITS;
 
         k = floor_log2_32(le2);
-        sR = cos_tb[k];              // cos(PI / le2);
-        sI = -sin_tb[k];             // -sin(PI / le2)
-        for (j = 1; j <= le2; j++) { /* loop for each sub DFT */
+        sR = cos_tb[k]; 
+        sI = -sin_tb[k];
+        for (j = 1; j <= le2; j++) {          /* loop for each sub DFT */
             for (i = j - 1; i < N; i += le) { /* loop for each butterfly */
                 ip = i + le2;
-                tR = ((long)(x[ip].real * uR) >> FFT_MATH_FRACTION_BITS) -
-                     (((long)x[ip].imag * uI) >> FFT_MATH_FRACTION_BITS);
-                tI = (((long)x[ip].real * uI) >> FFT_MATH_FRACTION_BITS) +
-                     (((long)x[ip].imag * uR) >> FFT_MATH_FRACTION_BITS);
+                tR = (((long)uR * x[ip].real) >> FFT_MATH_FRACTION_BITS) -
+                     (((long)uI * x[ip].imag) >> FFT_MATH_FRACTION_BITS);
+                tI = (((long)uI * x[ip].real) >> FFT_MATH_FRACTION_BITS) +
+                     (((long)uR * x[ip].imag) >> FFT_MATH_FRACTION_BITS);
                 x[ip].real = x[i].real - tR;
                 x[ip].imag = x[i].imag - tI;
                 x[i].real += tR;
                 x[i].imag += tI;
             } /* Next i */
+            /* Calculation of twiddle factor */
             tR = uR;
             uR = (((long)tR * sR) >> FFT_MATH_FRACTION_BITS) -
                  (((long)uI * sI) >> FFT_MATH_FRACTION_BITS);
@@ -130,6 +144,12 @@ int inverse_fft(Complex x[], int32_t N) {
     return 0;
 }
 
+/**
+ * @brief Returns the number of ones bitwise in an function. 
+ * 
+ * @param n the number.
+ * @return int number of ones.
+ */
 int ones_32(int32_t n) {
     unsigned int c = 0;
     for (c = 0; n; ++c) {
@@ -138,6 +158,12 @@ int ones_32(int32_t n) {
     return c;
 }
 
+/**
+ * @brief Returns the floor log2 of a number
+ * 
+ * @param x the number
+ * @return floor log2 of x
+ */
 int32_t floor_log2_32(int32_t x) {
     x |= (x >> 1);
     x |= (x >> 2);
