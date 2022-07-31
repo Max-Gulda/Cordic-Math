@@ -220,7 +220,7 @@ int ones_32(int32_t n) {
 }
 
 /**
- * @brief Returns the floor log2 of a number
+ * @brief Returns the floor(log2(x))
  * 
  * @param x the number
  * @return floor log2 of x
