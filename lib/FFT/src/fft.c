@@ -127,6 +127,18 @@ int fft(Complex x[], int32_t N) {
     return 0;
 }
 
+/**
+ * @brief Simple inverse Fast Fourier Transform also known as IFFT. 
+ * 
+ * @param x is a fixedpoint array of the complex datatype defined in fft.h,
+ * the answer of the IFFT will be in this array. The data in this
+ * array will be deleted, make sure to save the data if you need it.
+ * 
+ * @param N is the length of the array. NOTE this variable need to
+ * be a number 2^k.
+ * 
+ * @return The function returns 0, the answer is in the array. 
+ */
 int inverse_fft(Complex x[], int32_t N) {
     int k = 0;
 
