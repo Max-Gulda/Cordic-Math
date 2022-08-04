@@ -80,3 +80,25 @@ The following image shows the precision of the Cordic algorithm. The left column
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+
+<h1 align="center">FFT</h3>
+
+ <p align="center">
+    Project Decription
+    <br />
+    <a href="https://github.com/Max-Gulda/Cordic-Math/tree/main/lib/FFT"><strong>Explore»</strong></a>
+    <br />
+    <br />
+    ·
+    <a href="https://github.com/Flaxyson/Cordic-Math/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/Flaxyson/Cordic-Math/issues">Request Feature</a>
+  </p>
+</div>
+
+<br />
+
+## About the Fast Fourier Transform
+
+A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourier transform (DFT) of a sequence, or its inverse (IDFT). Fourier transform converts a signal from its original domain (often time) to a representation in the frequency domain. DFT requires O(n^2) which is often to slow to be practical. FFT rapidly computes such transformations by factorizing the DFT-matrix, as a result it manages to reduce the complexity of computing the DFT from O(O^2) to O(N log N). The difference in speed can be enormous especially for long data sets where N may be in the thousands or millions.
+

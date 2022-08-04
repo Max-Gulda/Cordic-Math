@@ -143,7 +143,7 @@ int fft(Complex x[], int32_t N) {
     /*
      * For Loops
      */
-    for (l = 1; l <= M; l++) { /* loop for ceil{log2(N)} */
+    for (l = 1; l <= M; l++) {
         le = (int)(1 << l);
         le2 = (int)(le >> 1);
         uR = 1 << FFT_MATH_FRACTION_BITS;
@@ -206,7 +206,7 @@ int inverse_fft(Complex x[], int32_t N) {
 }
 
 /**
- * @brief Returns the number of ones bitwise in an function. 
+ * @brief Returns the number of ones, bitwise in an function. 
  * 
  * @param n the number.
  * @return int number of ones.
