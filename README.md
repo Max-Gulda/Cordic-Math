@@ -107,3 +107,9 @@ A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourie
 The code is built around a complex datatype defined in fft.h the algorithm is also based on the fixed-point arithmetic to calculate faster on microcontroller units (MCU) that does not support float datatypes. The number of fraction bits is defined in the fft.h file as FFT_MATH_FRACTION_BITS (default is set as 16).
 
 ![My image](img/Screenshot-5.png)
+
+## Example data
+
+In the picture below you can observe the result of the fourier transform for two simple sinusoid waves added togheter. 5 Hz with an amplitude of 0.7 and 9 Hz with an amplitude of 1.
+
+![Dataset](img/Screenshot-7.png)

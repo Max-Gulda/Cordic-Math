@@ -66,7 +66,7 @@ static const int cos_tb[] = {
 
 int main(void) {
     Complex x[SAMPLE_NODES];
-
+    printf("\nSinus with an amplitude of 0.7 and 5 Hz \nadded with a 9 Hz 1 amplitude sinuswave:\n\n");
     for (int i = 0; i < SAMPLE_NODES; i++) {
         x[i].real = (0.7 * sin(2 * 5 * PI * i / SAMPLE_NODES) +
                     sin(2 * PI * 9 * i / SAMPLE_NODES)) *
@@ -74,28 +74,29 @@ int main(void) {
         x[i].imag = 0;
     }
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        printf("%d\t : %.5f %.5f\n", i,
+        printf("%d:\t %.5f %.5f\n", i,
                x[i].real / pow(2, FFT_MATH_FRACTION_BITS),
                x[i].imag / pow(2, FFT_MATH_FRACTION_BITS));
     }
-    printf("\n\n\n\n");
+    printf("\n\n\n");
 
     fft(x, SAMPLE_NODES);
-
+    printf("The same dataset after fourier transform:\n\n");
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        printf("%d\t : %.5f %.5f\n", i,
+        printf("%d:\t %.5f %.5f\n", i,
                (x[i].real * 2 / SAMPLE_NODES) / pow(2, FFT_MATH_FRACTION_BITS),
                (x[i].imag * 2 / SAMPLE_NODES) / pow(2, FFT_MATH_FRACTION_BITS));
     }
-    printf("\n\n\n\n");
+    printf("\n\n\n");
 
     inverse_fft(x, SAMPLE_NODES);
-
+    printf("The same dataset after the inverse fourier transform,\nthis array should be equal to the first dataset.\n\n");
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        printf("%d\t : %.5f %.5f\n", i,
+        printf("%d:\t %.5f %.5f\n", i,
                x[i].real / pow(2, FFT_MATH_FRACTION_BITS),
                x[i].imag / pow(2, FFT_MATH_FRACTION_BITS));
     }
+    printf("\n");
 }
 /**
  * @brief Simple Fast Fourier Transform also known as FFT. 
