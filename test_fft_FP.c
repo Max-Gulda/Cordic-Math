@@ -13,8 +13,8 @@ typedef struct {
     int imag;
 } Complex;
 
-int32_t ones_32(int32_t n);
-int32_t floor_log2_32(int32_t x);
+static int32_t ones_32(int32_t n);
+static int32_t floor_log2_32(int32_t x);
 int32_t fft(Complex x[], int32_t N);
 int32_t inverse_fft(Complex x[], int32_t N);
 
@@ -74,7 +74,7 @@ int main(void) {
         x[i].imag = 0;
     }
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        printf("%d:\t %7.5f %7.5f\n", i,
+        printf("%d:\t %.5f %.5f\n", i,
                x[i].real / pow(2, FFT_MATH_FRACTION_BITS),
                x[i].imag / pow(2, FFT_MATH_FRACTION_BITS));
     }
@@ -83,7 +83,7 @@ int main(void) {
     fft(x, SAMPLE_NODES);
     printf("The same dataset after fourier transform:\n\n");
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        printf("%d:\t %7.5f %7.5f\n", i,
+        printf("%d:\t %.5f %.5f\n", i,
                (x[i].real * 2 / SAMPLE_NODES) / pow(2, FFT_MATH_FRACTION_BITS),
                (x[i].imag * 2 / SAMPLE_NODES) / pow(2, FFT_MATH_FRACTION_BITS));
     }
@@ -92,7 +92,7 @@ int main(void) {
     inverse_fft(x, SAMPLE_NODES);
     printf("The same dataset after the inverse fourier transform,\nthis array should be equal to the first dataset.\n\n");
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        printf("%d:\t %7.5f %7.5f\n", i,
+        printf("%d:\t %.5f %.5f\n", i,
                x[i].real / pow(2, FFT_MATH_FRACTION_BITS),
                x[i].imag / pow(2, FFT_MATH_FRACTION_BITS));
     }
@@ -212,7 +212,7 @@ int inverse_fft(Complex x[], int32_t N) {
  * @param n the number.
  * @return int number of ones.
  */
-int ones_32(int32_t n) {
+static int32_t ones_32(int32_t n) {
     unsigned int c = 0;
     for (c = 0; n; ++c) {
         n &= (n - 1);
@@ -226,7 +226,7 @@ int ones_32(int32_t n) {
  * @param x the number
  * @return floor log2 of x
  */
-int32_t floor_log2_32(int32_t x) {
+static int32_t floor_log2_32(int32_t x) {
     x |= (x >> 1);
     x |= (x >> 2);
     x |= (x >> 4);

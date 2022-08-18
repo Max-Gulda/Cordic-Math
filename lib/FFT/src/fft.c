@@ -60,7 +60,7 @@ static const int cos_tb[] = {
  *
  * @return The function returns 0, the answer is in the array.
  */
-int fft(Complex x[], int32_t N) {
+int32_t fft(Complex x[], int32_t N) {
     int i, j, l, k, ip;
     static int32_t M = 0;
     static int le, le2;
@@ -139,7 +139,7 @@ int fft(Complex x[], int32_t N) {
  * 
  * @return The function returns 0, the answer is in the array. 
  */
-int inverse_fft(Complex x[], int32_t N) {
+int32_t inverse_fft(Complex x[], int32_t N) {
     int k = 0;
 
     for (k = 0; k <= N - 1; k++) {
@@ -162,7 +162,7 @@ int inverse_fft(Complex x[], int32_t N) {
  * @param n the number.
  * @return int number of ones.
  */
-int ones_32(int32_t n) {
+static int32_t ones_32(int32_t n) {
     unsigned int c = 0;
     for (c = 0; n; ++c) {
         n &= (n - 1);
@@ -176,7 +176,7 @@ int ones_32(int32_t n) {
  * @param x the number
  * @return floor log2 of x
  */
-int32_t floor_log2_32(int32_t x) {
+static int32_t floor_log2_32(int32_t x) {
     x |= (x >> 1);
     x |= (x >> 2);
     x |= (x >> 4);
