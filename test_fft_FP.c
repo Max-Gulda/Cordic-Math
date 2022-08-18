@@ -74,7 +74,7 @@ int main(void) {
         x[i].imag = 0;
     }
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        printf("%d:\t %.5f %.5f\n", i,
+        printf("%d:\t %7.5f %7.5f\n", i,
                x[i].real / pow(2, FFT_MATH_FRACTION_BITS),
                x[i].imag / pow(2, FFT_MATH_FRACTION_BITS));
     }
@@ -83,7 +83,7 @@ int main(void) {
     fft(x, SAMPLE_NODES);
     printf("The same dataset after fourier transform:\n\n");
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        printf("%d:\t %.5f %.5f\n", i,
+        printf("%d:\t %7.5f %7.5f\n", i,
                (x[i].real * 2 / SAMPLE_NODES) / pow(2, FFT_MATH_FRACTION_BITS),
                (x[i].imag * 2 / SAMPLE_NODES) / pow(2, FFT_MATH_FRACTION_BITS));
     }
@@ -92,7 +92,7 @@ int main(void) {
     inverse_fft(x, SAMPLE_NODES);
     printf("The same dataset after the inverse fourier transform,\nthis array should be equal to the first dataset.\n\n");
     for (int i = 0; i < SAMPLE_NODES; i++) {
-        printf("%d:\t %.5f %.5f\n", i,
+        printf("%d:\t %7.5f %7.5f\n", i,
                x[i].real / pow(2, FFT_MATH_FRACTION_BITS),
                x[i].imag / pow(2, FFT_MATH_FRACTION_BITS));
     }
