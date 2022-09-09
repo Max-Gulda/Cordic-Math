@@ -87,8 +87,8 @@ int32_t cordic_atan(int32_t y, int32_t x) {
  */
 int32_t cordic_hypotenuse(int32_t y, int32_t x) {
     int tempX;
-    x = abs(x);
-    y = abs(y);
+    x = cordic_abs(x);
+    y = cordic_abs(y);
 
     for (int i = 0; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
@@ -309,11 +309,11 @@ int32_t cordic_rectangular_polar(Coordinates *input) {
     int tempX, sumAngle = 0, x = input->x, y = input->y;
     if (x < 0 && y >= 0) {
         sumAngle = 90 * (1 << CORDIC_MATH_FRACTION_BITS);
-        x = abs(x);
+        x = cordic_abs(x);
     } else if (x < 0 && y < 0) {
         sumAngle = 180 * (1 << CORDIC_MATH_FRACTION_BITS);
-        x = abs(x);
-        y = abs(y);
+        x = cordic_abs(x);
+        y = cordic_abs(y);
     }
 
     for (int i = 0; i < 15; i++) {
@@ -735,7 +735,7 @@ int32_t cordic_pow(int32_t base, int32_t exponent) {
  *
  * @return 32 bit int, |input|
  */
-int32_t abs(int32_t input) {
+int32_t cordic_abs(int32_t input) {
     if (input > 0) {
         return input;
     } else {

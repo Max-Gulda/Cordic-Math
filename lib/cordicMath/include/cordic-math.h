@@ -30,7 +30,7 @@ int32_t cordic_asin(int32_t yInput);
 int32_t cordic_acos(int32_t xInput);
 int32_t cordic_tan(int32_t theta);
 int32_t cordic_sqrt(int32_t x);
-int32_t abs(int32_t input);
+int32_t cordic_abs(int32_t input);
 int32_t isEven(int32_t input);
 int32_t isOdd(int32_t input);
 int32_t to_degree(int32_t input);
