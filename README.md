@@ -110,6 +110,10 @@ The code is built around a complex datatype defined in fft.h the algorithm is al
 
 ## Example data
 
-In the picture below you can observe the result of the fourier transform for two simple sinusoid waves added togheter. 5 Hz with an amplitude of 0.7 and 9 Hz with an amplitude of 1.
+In the picture below you can observe the result of the fourier transform for two simple sinusoid waves added togheter. 12 Hz with an amplitude of 0.1 and 3 Hz with an amplitude of 0.2.
 
-![Dataset](img/Screenshot-6.png)
+![Sinusoid wave](img/Screenshot-6.png)
+
+In the picture below you can see the fourier spectrum of the combination of these sinusoid waves.
+
+![Fourier transform](img/Screenshot-7.png)
