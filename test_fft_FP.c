@@ -3,10 +3,14 @@
 #include <stdlib.h>
 
 #define FFT_MATH_FRACTION_BITS 16
-#define SAMPLE_NODES (16)
+#define SAMPLE_NODES (128)
 #define PI (3.14159265f)
 
 #define FLOAT_TO_INT(x) ((x) >= 0 ? (int)((x) + 0.5) : (int)((x)-0.5))
+
+
+static const uint32_t CORDIC_GAIN = FLOAT_TO_INT(0.607253 * (1 << FFT_MATH_FRACTION_BITS));
+static const uint32_t ONE_EIGHTY_DIV_PI = FLOAT_TO_INT((180 / 3.14159265359) * (1 << FFT_MATH_FRACTION_BITS));
 
 typedef struct {
     int real;
@@ -17,62 +21,96 @@ static int32_t ones_32(int32_t n);
 static int32_t floor_log2_32(int32_t x);
 int32_t fft(Complex x[], int32_t N);
 int32_t inverse_fft(Complex x[], int32_t N);
+int32_t cordic_sin(int32_t theta);
+int32_t to_radians(int32_t input);
+int32_t to_degree(int32_t input);
 
-static const int sin_tb[] = {
-    FLOAT_TO_INT(0.000000 * (1 << FFT_MATH_FRACTION_BITS)), //PI
-    FLOAT_TO_INT(1.000000 * (1 << FFT_MATH_FRACTION_BITS)), //PI/2
-    FLOAT_TO_INT(0.707107 * (1 << FFT_MATH_FRACTION_BITS)), //PI/4
-    FLOAT_TO_INT(0.382683 * (1 << FFT_MATH_FRACTION_BITS)), //PI/8
-    FLOAT_TO_INT(0.195090 * (1 << FFT_MATH_FRACTION_BITS)), //PI/16
-    FLOAT_TO_INT(0.098017 * (1 << FFT_MATH_FRACTION_BITS)), //...
-    FLOAT_TO_INT(0.049068 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.024541 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.012272 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.006136 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.003068 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.001534 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.000767 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.000383 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.000192 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.000096 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.000048 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.000024 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.000012 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT(0.000006 * (1 << FFT_MATH_FRACTION_BITS)),  //...
-    FLOAT_TO_INT(0.000003 * (1 << FFT_MATH_FRACTION_BITS))}; //PI/(2^K)
+static const uint32_t LUT_CORDIC_ATAN[15] =  {FLOAT_TO_INT(45.0000 * (1 << FFT_MATH_FRACTION_BITS)),  /* 45.000    degrees */
+                                              FLOAT_TO_INT(26.5651 * (1 << FFT_MATH_FRACTION_BITS)),  /* 26.566    degrees */
+                                              FLOAT_TO_INT(14.0362 * (1 << FFT_MATH_FRACTION_BITS)),  /* 26.566    degrees */
+                                              FLOAT_TO_INT(7.1250  * (1 << FFT_MATH_FRACTION_BITS)),  /* 14.035    degrees */
+                                              FLOAT_TO_INT(3.5763  * (1 << FFT_MATH_FRACTION_BITS)),  /* 3.578     degrees */
+                                              FLOAT_TO_INT(1.7899  * (1 << FFT_MATH_FRACTION_BITS)),  /* 1.789     degrees */
+                                              FLOAT_TO_INT(0.8952  * (1 << FFT_MATH_FRACTION_BITS)),  /* 0.894     degrees */
+                                              FLOAT_TO_INT(0.4476  * (1 << FFT_MATH_FRACTION_BITS)),  /* 0.449     degrees */
+                                              FLOAT_TO_INT(0.2238  * (1 << FFT_MATH_FRACTION_BITS)),  /* 0.223     degrees */
+                                              FLOAT_TO_INT(0.1119  * (1 << FFT_MATH_FRACTION_BITS)),  /* 0.109     degrees */
+                                              FLOAT_TO_INT(0.0560  * (1 << FFT_MATH_FRACTION_BITS)),  /* 0.055     degrees */
+                                              FLOAT_TO_INT(0.0280  * (1 << FFT_MATH_FRACTION_BITS)),  /* 0.027     degrees */
+                                              FLOAT_TO_INT(0.0140  * (1 << FFT_MATH_FRACTION_BITS)),  /* 0.016     degrees */
+                                              FLOAT_TO_INT(0.0070  * (1 << FFT_MATH_FRACTION_BITS)),  /* 0.008     degrees */
+                                              FLOAT_TO_INT(0.0035  * (1 << FFT_MATH_FRACTION_BITS))}; /* 0.004     degrees */
 
-static const int cos_tb[] = {
-    FLOAT_TO_INT(-1.000000 * (1 << FFT_MATH_FRACTION_BITS)), //PI
-    FLOAT_TO_INT( 0.000000 * (1 << FFT_MATH_FRACTION_BITS)), //PI/2
-    FLOAT_TO_INT( 0.707107 * (1 << FFT_MATH_FRACTION_BITS)), //PI/4
-    FLOAT_TO_INT( 0.923880 * (1 << FFT_MATH_FRACTION_BITS)), //PI/8
-    FLOAT_TO_INT( 0.980785 * (1 << FFT_MATH_FRACTION_BITS)), //PI/16
-    FLOAT_TO_INT( 0.995185 * (1 << FFT_MATH_FRACTION_BITS)), //...
-    FLOAT_TO_INT( 0.998795 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 0.999699 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 0.999925 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 0.999981 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 0.999995 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 0.999999 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
-    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),  //...
-    FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS))}; //PI/(2^K)
+static const int sin_tb[] = {FLOAT_TO_INT(0.000000 * (1 << FFT_MATH_FRACTION_BITS)), //PI
+                             FLOAT_TO_INT(1.000000 * (1 << FFT_MATH_FRACTION_BITS)), //PI/2
+                             FLOAT_TO_INT(0.707107 * (1 << FFT_MATH_FRACTION_BITS)), //PI/4
+                             FLOAT_TO_INT(0.382683 * (1 << FFT_MATH_FRACTION_BITS)), //PI/8
+                             FLOAT_TO_INT(0.195090 * (1 << FFT_MATH_FRACTION_BITS)), //PI/16
+                             FLOAT_TO_INT(0.098017 * (1 << FFT_MATH_FRACTION_BITS)), //...
+                             FLOAT_TO_INT(0.049068 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.024541 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.012272 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.006136 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.003068 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.001534 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.000767 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.000383 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.000192 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.000096 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.000048 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.000024 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.000012 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT(0.000006 * (1 << FFT_MATH_FRACTION_BITS)),  //...
+                             FLOAT_TO_INT(0.000003 * (1 << FFT_MATH_FRACTION_BITS))}; //PI/(2^K)
+
+static const int cos_tb[] = {FLOAT_TO_INT(-1.000000 * (1 << FFT_MATH_FRACTION_BITS)), //PI
+                             FLOAT_TO_INT( 0.000000 * (1 << FFT_MATH_FRACTION_BITS)), //PI/2
+                             FLOAT_TO_INT( 0.707107 * (1 << FFT_MATH_FRACTION_BITS)), //PI/4
+                             FLOAT_TO_INT( 0.923880 * (1 << FFT_MATH_FRACTION_BITS)), //PI/8
+                             FLOAT_TO_INT( 0.980785 * (1 << FFT_MATH_FRACTION_BITS)), //PI/16
+                             FLOAT_TO_INT( 0.995185 * (1 << FFT_MATH_FRACTION_BITS)), //...
+                             FLOAT_TO_INT( 0.998795 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 0.999699 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 0.999925 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 0.999981 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 0.999995 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 0.999999 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),
+                             FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS)),  //...
+                             FLOAT_TO_INT( 1.000000 * (1 << FFT_MATH_FRACTION_BITS))}; //PI/(2^K)
 
 int main(void) {
     Complex x[SAMPLE_NODES];
-    printf("\nSinus with an amplitude of 0.7 and 5 Hz \nadded with a 9 Hz 1 amplitude sinuswave:\n\n");
-    for (int i = 0; i < SAMPLE_NODES; i++) {
-        x[i].real = (0.7 * sin(2 * 5 * PI * i / SAMPLE_NODES) +
-                    sin(2 * PI * 9 * i / SAMPLE_NODES)) *
-                    (1 << FFT_MATH_FRACTION_BITS);
-        x[i].imag = 0;
+    double xCord[128], yCord[128];
+    
+    for(int i = 0; i < 128; i++){
+        xCord[i] = i;
     }
+
+    int alpha = 2 * PI * (1 << FFT_MATH_FRACTION_BITS);
+    //printf("sin : %.5f\nCordic sin : %.5f\n", sin(0.3),(float)cordic_sin(0.3*(1<<FFT_MATH_FRACTION_BITS))/(1<<FFT_MATH_FRACTION_BITS));
+    printf("\nSinus with an amplitude of 0.7 and 5 Hz \nadded with a 9 Hz 1 amplitude sinuswave:\n\n");
+    for (int i = 0; i < 128; i++) {
+        if(i>160){
+            x[i].real = 0;
+            x[i].imag = 0;
+        }
+        x[i].real = 3*cordic_sin(to_degree(alpha * 5 * i / (128))) + cordic_sin(to_degree(alpha * 9 * i / 128));
+        x[i].imag = 0;
+
+    }
+
+    for (int i = 0; i < 128; i++){
+        yCord[i] = x[i].real;
+    }
+    
+
     for (int i = 0; i < SAMPLE_NODES; i++) {
         printf("%d:\t %.5f %.5f\n", i,
                x[i].real / pow(2, FFT_MATH_FRACTION_BITS),
@@ -102,7 +140,7 @@ int main(void) {
  * @brief Simple Fast Fourier Transform also known as FFT. 
  * 
  * @param x is a fixedpoint array of the complex datatype defined in fft.h,
- * the answer of the FFT will be in this array. The data in this
+ * the answer of the FFT will be returned in this array. The data in this
  * array will be deleted, make sure to save the data if you need it.
  * 
  * @param N is the length of the array. NOTE this variable need to
@@ -110,7 +148,7 @@ int main(void) {
  * 
  * @return The function returns 0, the answer is in the array. 
  */
-int fft(Complex x[], int32_t N) {
+int32_t fft(Complex x[], int32_t N) {
     int i, j, l, k, ip;
     static int32_t M = 0;
     static int le, le2;
@@ -181,7 +219,7 @@ int fft(Complex x[], int32_t N) {
  * @brief Simple inverse Fast Fourier Transform also known as IFFT. 
  * 
  * @param x is a fixedpoint array of the complex datatype defined in fft.h,
- * the answer of the IFFT will be in this array. The data in this
+ * the answer of the IFFT will be returned in this array. The data in this
  * array will be deleted, make sure to save the data if you need it.
  * 
  * @param N is the length of the array. NOTE this variable need to
@@ -189,7 +227,7 @@ int fft(Complex x[], int32_t N) {
  * 
  * @return The function returns 0, the answer is in the array. 
  */
-int inverse_fft(Complex x[], int32_t N) {
+int32_t inverse_fft(Complex x[], int32_t N) {
     int k = 0;
 
     for (k = 0; k <= N - 1; k++) {
@@ -234,4 +272,49 @@ static int32_t floor_log2_32(int32_t x) {
     x |= (x >> 16);
 
     return (ones_32(x >> 1));
+}
+
+int32_t cordic_sin(int32_t theta) {
+    int x = CORDIC_GAIN, y = 0, sumAngle = 0, tempX;
+
+    theta %= (360 << FFT_MATH_FRACTION_BITS);
+
+    if (theta > (90 << FFT_MATH_FRACTION_BITS)) {
+        sumAngle = 180 << FFT_MATH_FRACTION_BITS;
+    }
+    if (theta > (270 << FFT_MATH_FRACTION_BITS)) {
+        sumAngle = 360 << FFT_MATH_FRACTION_BITS;
+    }
+
+    for (int i = 0; i < 15; i++) {
+        tempX = x;
+        if (theta > sumAngle) {
+            /* Rotate counter clockwise */
+            x -= (y >> i);
+            y += (tempX >> i);
+            sumAngle += LUT_CORDIC_ATAN[i];
+        } else {
+            /* Rotate clockwise */
+            x += (y >> i);
+            y -= (tempX >> i);
+            sumAngle -= LUT_CORDIC_ATAN[i];
+        }
+
+    }
+
+    if (theta > (90 << FFT_MATH_FRACTION_BITS) &&
+        theta < (270 << FFT_MATH_FRACTION_BITS)) {
+
+        y = -y;
+    }
+
+    return y;
+}
+
+int32_t to_radians(int32_t input) {
+    return (((long)input << FFT_MATH_FRACTION_BITS) / ONE_EIGHTY_DIV_PI);
+}
+
+int32_t to_degree(int32_t input) {
+    return ((long)input * ONE_EIGHTY_DIV_PI >> FFT_MATH_FRACTION_BITS);
 }
