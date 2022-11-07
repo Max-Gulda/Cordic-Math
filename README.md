@@ -108,12 +108,12 @@ The code is built around a complex datatype defined in fft.h the algorithm is al
 
 ![My image](img/Screenshot-5.png)
 
-## Example data
-
-In the picture below you can observe the result of the fourier transform for two simple sinusoid waves added togheter. 12 Hz with an amplitude of 0.1 and 3 Hz with an amplitude of 0.2.
-
+## Sinusoid wave
+In the picture below you can observe the result of the fourier transform for two simple sinusoid waves added togheter. 12 Hz with an amplitude of 0.1 and 3 Hz with an amplitude of 0.2. This data is calculated with the Cordic Sin library which explains the small deviations. 
 ![Sinusoid wave](img/Screenshot-6.png)
-
+## Fourier Transform
 In the picture below you can see the fourier spectrum of the combination of these sinusoid waves.
-
 ![Fourier transform](img/Screenshot-7.png)
+## Inverse Fourier Transform
+In the picture below the inverse fourier transform is calculated on the frequency spectrum resulting in a graph that is very close to the original sinusoid wave.
+![Fourier transform](img/Screenshot-6.png)
