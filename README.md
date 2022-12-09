@@ -109,6 +109,8 @@ n = a specific index.
 
 fs = the sample frequency.
 
+
+
 Once you’ve called the fft() function multiply the 0:th element with:
 
 ![Equation 1](img/Formula1.png)
