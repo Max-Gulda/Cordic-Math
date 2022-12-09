@@ -108,7 +108,7 @@ A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourie
 
 <strong>n</strong> = a specific index.
 
-<strong>fs</strong> = the sample frequency.
+<strong>fs</strong> = the sample time.
 
 
 
