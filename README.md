@@ -102,7 +102,7 @@ The following image shows the precision of the Cordic algorithm. The left column
 
 A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourier transform (DFT) of a sequence, or its inverse (IDFT). Fourier transform converts a signal from its original domain (often time) to a representation in the frequency domain. DFT requires O(n^2) which is often to slow to be practical. FFT rapidly computes such transformations by factorizing the DFT-matrix, as a result it manages to reduce the complexity of computing the DFT from O(O^2) to O(N log N). The difference in speed can be enormous especially for long data sets where N may be in the thousands or millions.
 
-For the following formulas:
+<strong>For the following formulas:</strong>
 
 <strong>N</strong> = The total number of sample nodes.
 
