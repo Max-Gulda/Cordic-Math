@@ -116,4 +116,6 @@ In the picture below you can see the fourier spectrum of the combination of thes
 ![Fourier transform](img/Screenshot-7.png)
 ## Inverse Fourier Transform
 In the picture below the inverse fourier transform is calculated on the frequency spectrum resulting in a graph that is very close to the original sinusoid wave.
-![Fourier transform](img/Screenshot-6.png)
+![Fourier transform](img/Screenshot-8.png)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
