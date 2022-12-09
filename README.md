@@ -108,10 +108,15 @@ n = a specific index.
 fs = the sample frequency.
 
 Once you’ve called the fft() function multiply the 0:th element with:
+
 ![Equation 1](img/Formula1.png)
+
 Then multiply every element except the 0:th with:
+
 ![Equation 2](img/Formula2.png)
+
 To obtain the frequency that any index represents use the following formula: 
+
 ![Equation 3](img/Formula3.png)
 
 ## About the code
