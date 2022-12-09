@@ -104,11 +104,11 @@ A fast Fourier transform (FFT) is an algorithm that computes the discrete Fourie
 
 For the following formulas:
 
-N = The total number of sample nodes.
+<strong>N</strong> = The total number of sample nodes.
 
-n = a specific index.
+<strong>n</strong> = a specific index.
 
-fs = the sample frequency.
+<strong>fs</strong> = the sample frequency.
 
 
 
