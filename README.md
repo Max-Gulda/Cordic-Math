@@ -3,13 +3,13 @@
   <p align="center">
     Project Decription
     <br />
-    <a href="https://github.com/Flaxyson/Cordic-Math"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/Max-Gulda/Cordic-Math"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     ·
-    <a href="https://github.com/Flaxyson/Cordic-Math/issues">Report Bug</a>
+    <a href="https://github.com/Max-Gulda/Cordic-Math/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Flaxyson/Cordic-Math/issues">Request Feature</a>
+    <a href="https://github.com/Max-Gulda/Cordic-Math/issues">Request Feature</a>
   </p>
 </div>
 
@@ -90,9 +90,9 @@ The following image shows the precision of the Cordic algorithm. The left column
     <br />
     <br />
     ·
-    <a href="https://github.com/Flaxyson/Cordic-Math/issues">Report Bug</a>
+    <a href="https://github.com/Max-Gulda/Cordic-Math/issues">Report Bug</a>
     ·
-    <a href="https://github.com/Flaxyson/Cordic-Math/issues">Request Feature</a>
+    <a href="https://github.com/Max-Gulda/Cordic-Math/issues">Request Feature</a>
   </p>
 </div>
 
