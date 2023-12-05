@@ -751,8 +751,7 @@ int32_t cordic_abs(int32_t input) {
  * @return 32 bit int
  */
 int32_t isEven(int32_t input) {
-    if (input % 2) return 0;
-    return 1;
+    return (input % 2) == 0;
 }
 
 /**
@@ -763,8 +762,7 @@ int32_t isEven(int32_t input) {
  * @return 32 bit int
  */
 int32_t isOdd(int32_t input) {
-    if (input % 2) return 1;
-    return 0;
+    return (input % 2) != 0;
 }
 
 /**
