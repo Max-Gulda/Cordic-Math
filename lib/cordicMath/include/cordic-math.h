@@ -7,7 +7,7 @@
  * This variable can be changed but the recomended value is inbetween 8 and 22.
  * Default is set to 16.
  */
-#define CORDIC_MATH_FRACTION_BITS 8
+#define CORDIC_MATH_FRACTION_BITS 16
 /**
  * @brief CORDIC_SPEED_FACTOR is the number of loops the Cordic algorithm goes through. 
  * Keep this variable between 8 and 15!
