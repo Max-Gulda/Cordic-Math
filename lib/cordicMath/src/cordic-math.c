@@ -736,11 +736,7 @@ int32_t cordic_pow(int32_t base, int32_t exponent) {
  * @return 32 bit int, |input|
  */
 int32_t cordic_abs(int32_t input) {
-    if (input > 0) {
-        return input;
-    } else {
-        return -input;
-    }
+    return (input >= 0) ? input : -input;
 }
 
 /**
