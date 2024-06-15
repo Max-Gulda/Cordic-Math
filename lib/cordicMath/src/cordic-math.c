@@ -56,7 +56,7 @@ static const uint32_t LUT_CORDIC_ATANH[14] = {FLOAT_TO_INT(31.4729 * (1 << CORDI
  * fixed-point format.
  */
 int32_t fixed_mul(int32_t a, int32_t b) {
-    return (a * b) / CORDIC_MATH_FRACTION_BITS;
+    return (a * b) >> CORDIC_MATH_FRACTION_BITS;
 }
 
 /**
@@ -72,7 +72,7 @@ int32_t fixed_mul(int32_t a, int32_t b) {
  * fixed-point format.
  */
 int32_t fixed_div(int32_t a, int32_t b) {
-    return (a * CORDIC_MATH_FRACTION_BITS) / b;
+    return (a << CORDIC_MATH_FRACTION_BITS) / b;
 }
 
 
