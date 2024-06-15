@@ -43,6 +43,39 @@ static const uint32_t LUT_CORDIC_ATANH[14] = {FLOAT_TO_INT(31.4729 * (1 << CORDI
                                               FLOAT_TO_INT(0.0070  * (1 << CORDIC_MATH_FRACTION_BITS)),  /* 0.008     degrees */
                                               FLOAT_TO_INT(0.0035  * (1 << CORDIC_MATH_FRACTION_BITS))}; /* 0.004     degrees */
 
+/**
+ * @brief Perform fixed-point multiplication.
+ *
+ * This function multiplies two fixed-point numbers. The result is
+ * scaled down by the fixed-point scaling factor to maintain the correct
+ * fixed-point representation.
+ *
+ * @param a Fixed-point number in the range defined by SCALE.
+ * @param b Fixed-point number in the range defined by SCALE.
+ * @return The product of the two numbers, scaled appropriately to fit the
+ * fixed-point format.
+ */
+int32_t fixed_mul(int32_t a, int32_t b) {
+    return (a * b) / CORDIC_MATH_FRACTION_BITS;
+}
+
+/**
+ * @brief Perform fixed-point division.
+ *
+ * This function divides one fixed-point number by another. The numerator
+ * is scaled up by the fixed-point scaling factor to maintain precision
+ * before performing the division.
+ *
+ * @param a Fixed-point numerator in the range defined by SCALE.
+ * @param b Fixed-point denominator in the range defined by SCALE.
+ * @return The quotient of the division, scaled appropriately to fit the
+ * fixed-point format.
+ */
+int32_t fixed_div(int32_t a, int32_t b) {
+    return (a * CORDIC_MATH_FRACTION_BITS) / b;
+}
+
+
 /*****************************************VECTORING MODE***********************************************/
 
 /**
