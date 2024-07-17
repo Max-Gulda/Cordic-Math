@@ -712,6 +712,11 @@ int32_t cordic_exp(int32_t exponent) {
         n++;
     }
 
+    while (sumAngle < 0) {
+        sumAngle += ONE_EIGHTY_DIV_PI;
+        n--;
+    }
+
     for (int i = 1; i < CORDIC_SPEED_FACTOR; i++) {
         tempX = x;
         if (sumAngle > 0) {
@@ -744,9 +749,13 @@ int32_t cordic_exp(int32_t exponent) {
 
     y = DECIMAL_TO_FP;
     for (int i = 0; i < n; i++) {
-        y = ((long)y * EULER) >> CORDIC_MATH_FRACTION_BITS;
+        y = (int32_t)(((int64_t)y * EULER) >> CORDIC_MATH_FRACTION_BITS);
     }
-    return ((long)x * y) >> CORDIC_MATH_FRACTION_BITS;
+    for (int i = 0; i > n; i--) {
+        y = (int32_t)(((int64_t)y << CORDIC_MATH_FRACTION_BITS) / EULER);
+    }
+
+    return (int32_t)(((int64_t)x * y) >> CORDIC_MATH_FRACTION_BITS);
 }
 
 /**
@@ -758,7 +767,9 @@ int32_t cordic_exp(int32_t exponent) {
  * @return 32 bit int fixedpoint according to CORDIC_MATH_FRACTION_BITS, base^exponent
  */
 int32_t cordic_pow(int32_t base, int32_t exponent) {
-    return cordic_exp(exponent * cordic_ln(base) >> CORDIC_MATH_FRACTION_BITS);
+    int64_t ln_base = cordic_ln(base);
+    int64_t product = (int64_t)exponent * ln_base;
+    return (int32_t)cordic_exp((int32_t)(product >> CORDIC_MATH_FRACTION_BITS));
 }
 
 /**
