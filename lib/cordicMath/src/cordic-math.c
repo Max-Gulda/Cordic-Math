@@ -50,8 +50,8 @@ static const uint32_t LUT_CORDIC_ATANH[14] = {FLOAT_TO_INT(31.4729 * (1 << CORDI
  * scaled down by the fixed-point scaling factor to maintain the correct
  * fixed-point representation.
  *
- * @param a Fixed-point number in the range defined by SCALE.
- * @param b Fixed-point number in the range defined by SCALE.
+ * @param a Fixed-point number in the range defined by CORDIC_MATH_FRACTION_BITS.
+ * @param b Fixed-point number in the range defined by CORDIC_MATH_FRACTION_BITS.
  * @return The product of the two numbers, scaled appropriately to fit the
  * fixed-point format.
  */
@@ -66,8 +66,8 @@ int32_t fixed_mul(int32_t a, int32_t b) {
  * is scaled up by the fixed-point scaling factor to maintain precision
  * before performing the division.
  *
- * @param a Fixed-point numerator in the range defined by SCALE.
- * @param b Fixed-point denominator in the range defined by SCALE.
+ * @param a Fixed-point numerator in the range defined by CORDIC_MATH_FRACTION_BITS.
+ * @param b Fixed-point denominator in the range defined by CORDIC_MATH_FRACTION_BITS.
  * @return The quotient of the division, scaled appropriately to fit the
  * fixed-point format.
  */
